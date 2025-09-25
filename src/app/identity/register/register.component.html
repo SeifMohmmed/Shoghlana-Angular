@@ -1,0 +1,209 @@
+<div dir="rtl" class="container-fluid">
+  <div class="row">
+    <div class="col-md-6 float-right mt-5 me-3">
+      <form
+        (ngSubmit)="handleRegister(RegisterForm)"
+        [formGroup]="RegisterForm"
+        class="form"
+      >
+        <!-- ================= NAME ================= -->
+        <div class="flex-column">
+          <label for="name">الاسم</label>
+        </div>
+        <div class="inputForm">
+          <i class="fas fa-user fa-lg me-1 fa-fw"></i>
+          <input
+            formControlName="name"
+            placeholder="ادخل اسمك هنا "
+            id="name"
+            class="input"
+            type="text"
+          />
+        </div>
+        <span
+          class="text-danger small"
+          *ngIf="
+            RegisterForm.get('name')?.hasError('required') &&
+            RegisterForm.get('name')?.touched
+          "
+        >
+          يرجي إدخال الاسم
+        </span>
+        <span
+          class="text-danger small"
+          *ngIf="
+            RegisterForm.get('name')?.hasError('minlength') &&
+            RegisterForm.get('name')?.touched
+          "
+        >
+          الاسم لا يمكن أن يكون أقل من 3 حروف
+        </span>
+        <span
+          class="text-danger small"
+          *ngIf="
+            RegisterForm.get('name')?.hasError('maxlength') &&
+            RegisterForm.get('name')?.touched
+          "
+        >
+          الاسم لا يمكن أن يكون أكثر من 20 حرفاً
+        </span>
+        <!-- ================= EMAIL ================= -->
+        <div class="flex-column mt-3">
+          <label for="email">البريد الإلكتروني</label>
+        </div>
+        <div class="inputForm">
+          <i class="fa-solid fa-envelope me-1"></i>
+          <input
+            formControlName="email"
+            placeholder="البريد الإلكتروني"
+            id="email"
+            class="input"
+            type="email"
+          />
+        </div>
+        <span
+          class="text-danger small"
+          *ngIf="
+            RegisterForm.get('email')?.hasError('required') &&
+            RegisterForm.get('email')?.touched
+          "
+        >
+          البريد الإلكتروني مطلوب
+        </span>
+        <span
+          class="text-danger small"
+          *ngIf="
+            RegisterForm.get('email')?.hasError('email') &&
+            RegisterForm.get('email')?.touched
+          "
+        >
+          البريد الإلكتروني غير صالح
+        </span>
+
+        <!-- ================= PHONE ================= -->
+        <div class="flex-column mt-3">
+          <label for="phone">الهاتف</label>
+        </div>
+        <div class="inputForm">
+          <i class="fa-solid fa-phone me-1"></i>
+          <input
+            formControlName="phone"
+            placeholder="الهاتف"
+            id="phone"
+            class="input"
+            type="text"
+          />
+        </div>
+        <span
+          class="text-danger small"
+          *ngIf="
+            RegisterForm.get('phone')?.hasError('required') &&
+            RegisterForm.get('phone')?.touched
+          "
+        >
+          رقم الهاتف مطلوب
+        </span>
+        <span
+          class="text-danger small"
+          *ngIf="
+            RegisterForm.get('phone')?.hasError('pattern') &&
+            RegisterForm.get('phone')?.touched
+          "
+        >
+          رقم الهاتف غير صالح (مثال: 01012345678)
+        </span>
+
+        <!-- ================= PASSWORD ================= -->
+        <div class="row mt-3">
+          <div class="col-md-6">
+            <div class="flex-column">
+              <label for="password">كلمة السر</label>
+            </div>
+            <div class="inputForm">
+              <i class="fa-solid fa-lock me-1"></i>
+              <input
+                formControlName="password"
+                placeholder="كلمة السر"
+                id="password"
+                class="input"
+                type="password"
+              />
+            </div>
+            <span
+              class="text-danger small"
+              *ngIf="
+                RegisterForm.get('password')?.hasError('required') &&
+                RegisterForm.get('password')?.touched
+              "
+            >
+              كلمة السر مطلوبة
+            </span>
+            <span
+              class="text-danger small"
+              *ngIf="
+                RegisterForm.get('password')?.hasError('pattern') &&
+                RegisterForm.get('password')?.touched
+              "
+            >
+              كلمة السر يجب أن تكون 6 حروف على الأقل وتحتوي على رقم
+            </span>
+          </div>
+
+          <!-- ================= RE-PASSWORD ================= -->
+          <div class="col-md-6">
+            <div class="flex-column">
+              <label for="rePassword">تأكيد كلمة السر</label>
+            </div>
+            <div class="inputForm">
+              <i class="fa-solid fa-lock me-1"></i>
+              <input
+                formControlName="rePassword"
+                placeholder="تأكيد كلمة السر"
+                id="rePassword"
+                class="input"
+                type="password"
+              />
+            </div>
+            <span
+              class="text-danger small"
+              *ngIf="
+                RegisterForm.get('rePassword')?.hasError('required') &&
+                RegisterForm.get('rePassword')?.touched
+              "
+            >
+              تأكيد كلمة السر مطلوب
+            </span>
+            <span
+              class="text-danger small"
+              *ngIf="
+                RegisterForm.hasError('mismatch') &&
+                RegisterForm.get('rePassword')?.touched
+              "
+            >
+              كلمة السر وتأكيد كلمة السر غير متطابقين
+            </span>
+          </div>
+        </div>
+
+        <!-- ================= SUBMIT ================= -->
+        <button type="submit" class="btn">تسجيل الدخول</button>
+        <p class="p">ليس لديك حساب؟ <span class="span">سجل الآن</span></p>
+        <p class="p line">أو</p>
+
+        <div class="flex-row">
+          <button class="btn google bg-danger">
+            <i class="fa-brands fa-google" aria-hidden="true"></i> سجل بواسطة
+            جوجل
+          </button>
+        </div>
+      </form>
+    </div>
+    <div class="col-md-5 mt-5">
+      <img
+        src="../../../assets/Images/Freelancer-amico.png"
+        alt="img"
+        class="img-fluid"
+      />
+    </div>
+  </div>
+</div>
