@@ -13,6 +13,8 @@ import { FooterComponent } from './Shared/Components/footer/footer.component';
 import { HomeComponent } from './home/home.component';
 import { NavbarComponent } from './Shared/Components/navbar/navbar.component';
 import { RouterLink, RouterLinkActive, RouterModule } from '@angular/router';
+import { JobModule } from './job/job.module';
+import { HighlightDirective } from './Shared/Directives/highlight.directive';
 
 @NgModule({
   declarations: [
@@ -28,6 +30,7 @@ import { RouterLink, RouterLinkActive, RouterModule } from '@angular/router';
     AppRoutingModule,
     IdentityModule,
     FreelancersModule,
+    JobModule,
     RouterLink,
     RouterLinkActive,
   ],

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { IFreelancer } from '../../Shared/Models/Freelancers/Freelancer';
+import { IFreelancer } from '../../Shared/Models/Freelancers/IFreelancer';
 import { ActivatedRoute } from '@angular/router';
 import { FreelancersService } from '../freelancers.service';
 
