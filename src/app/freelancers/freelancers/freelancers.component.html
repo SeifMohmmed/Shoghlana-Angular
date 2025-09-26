@@ -9,7 +9,7 @@
       >
         <div class="bg-white rounded shadow-lg py-5 px-4">
           <img
-            [src]="freelancer.imgURL"
+            [src]="freelancer.personalImageBytes"
             [alt]="freelancer.name + ' image'"
             width="100"
             class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm"
@@ -18,18 +18,6 @@
           <span class="small text-uppercase text-muted text">{{
             freelancer.title
           }}</span>
-          <div class="mt-2">
-            <ng-container
-              *ngFor="let star of getStars(freelancer.rate); let i = index"
-            >
-              <i
-                class="fa"
-                [ngClass]="i < freelancer.rate ? 'fa-star active' : 'fa-star'"
-              ></i>
-            </ng-container>
-            <span class="small-text">({{ freelancer.rate }}.0)</span>
-          </div>
-
           <div>
             <a
               [routerLink]="['/freelancers', freelancer.id]"
@@ -37,7 +25,6 @@
               >عرض الملف الشخصي</a
             >
           </div>
-
           <ul class="social mb-0 list-inline mt-3 text-center">
             <li class="list-inline-item">
               <a href="#" class="social-link">
