@@ -2,6 +2,7 @@ import { Component, OnChanges, SimpleChanges } from '@angular/core';
 import { ICategory } from '../../Shared/Models/Category/ICategory';
 import { IClientJob } from '../../Shared/Models/Client/IClient-Job';
 import { ClientService } from '../../client/client.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-project',
@@ -13,7 +14,7 @@ export class ProjectComponent implements OnChanges {
   filteredJobs: IClientJob[];
   selectedCategories: number[] = [];
 
-  constructor(private clientService: ClientService) {
+  constructor(private clientService: ClientService, private router: Router) {
     this.clientJob = this.clientService.getAllClientJobs();
     this.filteredJobs = [...this.clientJob];
   }
@@ -29,5 +30,9 @@ export class ProjectComponent implements OnChanges {
     this.filteredJobs = this.clientService.filterProjects(
       this.selectedCategories
     );
+  }
+
+  navigateToDetails(id: Number) {
+    this.router.navigateByUrl(`/project/${id}`);
   }
 }
