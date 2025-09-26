@@ -15,6 +15,14 @@ import { NavbarComponent } from './Shared/Components/navbar/navbar.component';
 import { RouterLink, RouterLinkActive, RouterModule } from '@angular/router';
 import { JobModule } from './job/job.module';
 import { HighlightDirective } from './Shared/Directives/highlight.directive';
+import {
+  HTTP_INTERCEPTORS,
+  HttpClientModule,
+  provideHttpClient,
+  withFetch,
+  withInterceptors,
+} from '@angular/common/http';
+import { AuthInterceptor } from './Interceptors/auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -33,8 +41,12 @@ import { HighlightDirective } from './Shared/Directives/highlight.directive';
     JobModule,
     RouterLink,
     RouterLinkActive,
+    HttpClientModule,
   ],
-  providers: [provideClientHydration()],
+  providers: [
+    provideClientHydration(),
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent],
   exports: [RouterModule],
 })
