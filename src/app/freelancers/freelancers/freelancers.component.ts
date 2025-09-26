@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IFreelancer } from '../../Shared/Models/Freelancers/Freelancer';
+import { IFreelancer } from '../../Shared/Models/Freelancers/IFreelancer';
 import { FreelancersService } from '../freelancers.service';
 
 @Component({
