@@ -28,6 +28,12 @@ const routes: Routes = [
     loadChildren: () => import('./job/job.module').then((m) => m.JobModule),
   },
 
+  {
+    path: 'project',
+    loadChildren: () =>
+      import('./project/project.module').then((m) => m.ProjectModule),
+  },
+
   { path: '**', component: NotFoundComponent },
 ];
 
