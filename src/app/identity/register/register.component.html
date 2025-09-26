@@ -9,14 +9,14 @@
         <h5 class="text-center" style="color: #1dbf73">مرحبا بك</h5>
         <!-- ================= NAME ================= -->
         <div class="flex-column">
-          <label for="name">الاسم</label>
+          <label for="username">الاسم</label>
         </div>
         <div class="inputForm">
           <i class="fa fa-user fa-lg me-1 fa-fw"></i>
           <input
-            formControlName="name"
+            formControlName="username"
             placeholder="ادخل اسمك هنا "
-            id="name"
+            id="username"
             class="input"
             type="text"
           />
@@ -33,8 +33,8 @@
         <span
           class="text-danger small"
           *ngIf="
-            RegisterForm.get('name')?.hasError('minlength') &&
-            RegisterForm.get('name')?.touched
+            RegisterForm.get('username')?.hasError('minlength') &&
+            RegisterForm.get('username')?.touched
           "
         >
           الاسم لا يمكن أن يكون أقل من 3 حروف
@@ -42,8 +42,8 @@
         <span
           class="text-danger small"
           *ngIf="
-            RegisterForm.get('name')?.hasError('maxlength') &&
-            RegisterForm.get('name')?.touched
+            RegisterForm.get('username')?.hasError('maxlength') &&
+            RegisterForm.get('username')?.touched
           "
         >
           الاسم لا يمكن أن يكون أكثر من 20 حرفاً
@@ -83,14 +83,14 @@
 
         <!-- ================= PHONE ================= -->
         <div class="flex-column mt-3">
-          <label for="phone">الهاتف</label>
+          <label for="phoneNumber">الهاتف</label>
         </div>
         <div class="inputForm">
           <i class="fa fa-solid fa-phone me-1"></i>
           <input
-            formControlName="phone"
+            formControlName="phoneNumber"
             placeholder="الهاتف"
-            id="phone"
+            id="phoneNumber"
             class="input"
             type="text"
           />
@@ -98,8 +98,8 @@
         <span
           class="text-danger small"
           *ngIf="
-            RegisterForm.get('phone')?.hasError('required') &&
-            RegisterForm.get('phone')?.touched
+            RegisterForm.get('phoneNumber')?.hasError('required') &&
+            RegisterForm.get('phoneNumber')?.touched
           "
         >
           رقم الهاتف مطلوب
@@ -107,11 +107,11 @@
         <span
           class="text-danger small"
           *ngIf="
-            RegisterForm.get('phone')?.hasError('pattern') &&
-            RegisterForm.get('phone')?.touched
+            RegisterForm.get('phoneNumber')?.hasError('pattern') &&
+            RegisterForm.get('phoneNumber')?.touched
           "
         >
-          رقم الهاتف غير صالح (مثال: 01012345678)
+          رقم الهاتف صالح (مثال: 01012345678)
         </span>
 
         <!-- ================= PASSWORD ================= -->
@@ -153,12 +153,12 @@
           <!-- ================= RE-PASSWORD ================= -->
           <div class="col-md-6">
             <div class="flex-column">
-              <label for="rePassword">تأكيد كلمة السر</label>
+              <label for="repeatPassword">تأكيد كلمة السر</label>
             </div>
             <div class="inputForm">
               <i class="fa fa-solid fa-lock me-1"></i>
               <input
-                formControlName="rePassword"
+                formControlName="repeatPassword"
                 placeholder="تأكيد كلمة السر"
                 id="rePassword"
                 class="input"
@@ -168,8 +168,8 @@
             <span
               class="text-danger small"
               *ngIf="
-                RegisterForm.get('rePassword')?.hasError('required') &&
-                RegisterForm.get('rePassword')?.touched
+                RegisterForm.get('repeatPassword')?.hasError('required') &&
+                RegisterForm.get('repeatPassword')?.touched
               "
             >
               تأكيد كلمة السر مطلوب
@@ -178,7 +178,7 @@
               class="text-danger small"
               *ngIf="
                 RegisterForm.hasError('mismatch') &&
-                RegisterForm.get('rePassword')?.touched
+                RegisterForm.get('repeatPassword')?.touched
               "
             >
               كلمة السر وتأكيد كلمة السر غير متطابقين
@@ -188,8 +188,10 @@
 
         <!-- ================= SUBMIT ================= -->
         <button [disabled]="RegisterForm.invalid" type="submit" class="btn">
+          <i *ngIf="isLoading" class="fas fa-spinner fa-spin"></i>
           إنشاء حساب
         </button>
+
         <p class="p">ليس لديك حساب؟ <span class="span">سجل الآن</span></p>
         <p class="p line">أو</p>
 
