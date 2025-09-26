@@ -22,7 +22,7 @@ export class FreelancerProfileComponent implements OnInit {
       this.freelancerId = Number(params.get('id'));
       console.log('ID:', this.freelancerId);
 
-      this.freelancer = this.freelancerService.getById(this.freelancerId);
+      //this.freelancer = this.freelancerService.getById(this.freelancerId);
       console.log(this.freelancer);
     });
   }
