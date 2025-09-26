@@ -2,11 +2,18 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { NotFoundComponent } from './Shared/Components/not-found/not-found.component';
 import { HomeComponent } from './home/home.component';
+import { authGuard } from './Guards/auth.guard';
 
 const routes: Routes = [
   {
     path: '',
     component: HomeComponent,
+  },
+
+  {
+    path: '',
+    component: HomeComponent,
+    canActivate: [authGuard],
   },
 
   {
@@ -32,6 +39,14 @@ const routes: Routes = [
     path: 'project',
     loadChildren: () =>
       import('./project/project.module').then((m) => m.ProjectModule),
+  },
+
+  {
+    path: 'galleryworks',
+    loadChildren: () =>
+      import('./work-gallary/work-gallary.module').then(
+        (m) => m.WorkGallaryModule
+      ),
   },
 
   { path: '**', component: NotFoundComponent },
