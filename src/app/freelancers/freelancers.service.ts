@@ -18,7 +18,9 @@ export class FreelancersService {
     );
   }
 
-  getById(id: number) {
-    return this.http.get(this.baseURL + 'Freelancer' + id);
+  getById(id: number): Observable<ApiResponse<IFreelancer>> {
+    return this.http.get<ApiResponse<IFreelancer>>(
+      this.baseURL + 'Freelancer' + id
+    );
   }
 }
