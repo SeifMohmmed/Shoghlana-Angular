@@ -1,71 +1,19 @@
 import { Injectable } from '@angular/core';
-import { IClientJob } from '../Shared/Models/Client/IClient-Job';
+import { environment } from '../../environments/environment.development';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { ApiResponse } from '../Shared/Models/Response/ApiResponse';
+import { IClient } from '../Shared/Models/Client/Client';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ClientService {
-  ClientJob: IClientJob[];
-  filteredJobs: IClientJob[];
-  selectedCategories: number[] = [];
+  baseURL = environment.baseURL;
 
-  constructor() {
-    this.ClientJob = [
-      {
-        id: 1,
-        title: 'مطلوب متخصص لعمل اسكربت علي موقع حجز مواعيد تأشيرة',
-        MinPrice: '25$',
-        MaxPrice: '50$',
-        status: 'مفتوح',
-        clientName: 'منار',
-        clientImg: '../../assets/Images/Nerd-amico.png',
-        catID: 1,
-      },
-      {
-        id: 2,
-        title: ' تعديلات و إعادة تصميم موقع ووردبريس',
-        MinPrice: '10$',
-        MaxPrice: '30$',
-        status: 'مغلق',
-        clientName: 'أحمد',
-        clientImg: '../../assets/Images/Nerd-amico.png',
-        catID: 2,
-      },
-      {
-        id: 3,
-        title: 'موقع ومتجر إلكتروني لجمعية خيرية',
-        MinPrice: '20$',
-        MaxPrice: '40$',
-        status: 'مفتوح',
-        clientName: 'سارة',
-        clientImg: '../../assets/Images/Nerd-amico.png',
-        catID: 3,
-      },
-    ];
-    this.filteredJobs = [...this.ClientJob];
-  }
+  constructor(private http: HttpClient) {}
 
-  getAllClientJobs(): IClientJob[] {
-    return this.ClientJob;
-  }
-
-  getClientJobById(id: number): IClientJob | null {
-    let foundJob = this.ClientJob.find((job) => job.id == id);
-    return foundJob ? foundJob : null;
-  }
-
-  getClientJobByCatId(catId: number): IClientJob[] {
-    return this.ClientJob.filter((job) => job.catID == catId);
-  }
-
-  filterProjects(selectedCategories: number[]) {
-    this.selectedCategories = selectedCategories;
-    if (this.selectedCategories.length > 0) {
-      return (this.filteredJobs = this.ClientJob.filter((job) =>
-        this.selectedCategories.includes(job.catID)
-      ));
-    } else {
-      return (this.filteredJobs = [...this.ClientJob]);
-    }
+  getById(id: number): Observable<ApiResponse<IClient>> {
+    return this.http.get<ApiResponse<IClient>>(this.baseURL + 'Client/' + id);
   }
 }

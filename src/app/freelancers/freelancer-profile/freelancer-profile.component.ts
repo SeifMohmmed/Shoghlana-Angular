@@ -10,7 +10,7 @@ import { FreelancersService } from '../freelancers.service';
 })
 export class FreelancerProfileComponent implements OnInit {
   freelancer: IFreelancer | undefined;
-  freelancerId: number;
+  freelancerId!: number;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -18,6 +18,8 @@ export class FreelancerProfileComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.freelancerId = Number(this.activatedRoute.snapshot.paramMap.get('id'));
+
     if (this.freelancerId) {
       this.loadFreelancerData();
     }

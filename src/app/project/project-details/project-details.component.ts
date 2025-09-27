@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { IClientJob } from '../../Shared/Models/Client/IClient-Job';
 import { ActivatedRoute } from '@angular/router';
-import { ClientService } from '../../client/client.service';
 import { Location } from '@angular/common';
+import { ClientJobService } from '../../client/clientJob.service';
 
 @Component({
   selector: 'app-project-details',
@@ -15,7 +15,7 @@ export class ProjectDetailsComponent implements OnInit {
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private clientService: ClientService,
+    private clientService: ClientJobService,
     private location: Location
   ) {}
 
