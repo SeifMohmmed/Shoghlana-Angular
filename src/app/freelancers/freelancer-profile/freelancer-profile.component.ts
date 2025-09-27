@@ -18,12 +18,38 @@ export class FreelancerProfileComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.activatedRoute.paramMap.subscribe((params) => {
-      this.freelancerId = Number(params.get('id'));
-      console.log('ID:', this.freelancerId);
+    if (this.freelancerId) {
+      this.loadFreelancerData();
+    }
+    console.log('Freelancer obj OnInit :');
+    console.log(this.freelancer);
+  }
 
-      //this.freelancer = this.freelancerService.getById(this.freelancerId);
-      console.log(this.freelancer);
-    });
+  loadFreelancerData(): void {
+    if (!this.freelancer) {
+      this.freelancerService.getById(this.freelancerId).subscribe({
+        next: (res) => {
+          console.log('Response: ', res);
+          if (res.isSuccess) {
+            this.freelancer = res.data;
+            if (this.freelancer?.personalImageBytes) {
+              this.freelancer.personalImageBytes = this.convertToBase64(
+                this.freelancer.personalImageBytes
+              );
+            }
+          } else {
+            console.error(`Failed to get the data, Status Code: ${res.status}`);
+            console.error(`Server Message: ${res.message}`);
+          }
+        },
+        error: (err) => {
+          console.error(err);
+        },
+      });
+    }
+  }
+
+  private convertToBase64(bytes: any): string {
+    return `data:image/png;base64,${bytes}`;
   }
 }
