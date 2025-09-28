@@ -30,7 +30,7 @@ export class ClientProfileComponent implements OnInit, AfterViewInit {
 
     console.log(this.clientId);
 
-    this.clientService.getById(3).subscribe({
+    this.clientService.getById(this.clientId).subscribe({
       next: (res) => {
         console.log(res.data);
         if (res.isSuccess) {
