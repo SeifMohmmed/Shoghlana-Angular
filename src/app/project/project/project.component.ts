@@ -11,24 +11,12 @@ import { JobStatus } from '../../Shared/Enums/JobStatus/JobStatus';
   templateUrl: './project.component.html',
   styleUrl: './project.component.scss',
 })
-export class ProjectComponent implements OnInit, OnChanges {
+export class ProjectComponent implements OnInit {
   clientJob: IClientJob[];
   filteredJobs: IClientJob[];
   selectedCategories: number[] = [];
 
-  constructor(
-    private projectService: ProjectService,
-    private clientJobService: ClientJobService,
-    private router: Router
-  ) {}
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (this.selectedCategories) {
-      this.filteredJobs = this.clientJobService.filterProjects(
-        this.selectedCategories
-      );
-    }
-  }
+  constructor(private projectService: ProjectService, private router: Router) {}
 
   ngOnInit(): void {
     this.projectService.getAll().subscribe({
@@ -44,14 +32,16 @@ export class ProjectComponent implements OnInit, OnChanges {
     });
   }
 
-  filterProjects(selectedCategories: number[]) {
-    this.selectedCategories = selectedCategories;
-    this.filteredJobs = this.clientJobService.filterProjects(
-      this.selectedCategories
-    );
-  }
-
   navigateToDetails(id: number) {
-    this.router.navigate(['/project/', id]);
+    this.projectService.getById(id).subscribe({
+      next: (res) => {
+        if (res.isSuccess) {
+          console.log('Project Details: ', res.data);
+        } else {
+          console.error('Unexpected response structure: ', res);
+        }
+      },
+      error: (err) => console.log(err),
+    });
   }
 }
