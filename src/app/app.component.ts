@@ -9,21 +9,20 @@ import { SignalRService } from './Shared/Services/signal-r.service';
 export class AppComponent implements OnInit, OnDestroy {
   title = 'Shoghlana';
 
-  constructor(public signalRService: SignalRService) {}
+  constructor() {} //(public signalRService: SignalRService) {}
 
   ngOnInit(): void {
-    this.signalRService.startConnection();
-
-    setTimeout(() => {
-      this.signalRService.askServerListener();
-      this.signalRService.askServer();
-    }, 2000);
+    // this.signalRService.startConnection();
+    // setTimeout(() => {
+    //   this.signalRService.askServerListener();
+    //   this.signalRService.askServer();
+    // }, 2000);
   }
 
   ngOnDestroy(): void {
-    this.signalRService.hubConnection?.off('askServerResponse');
-    this.signalRService.hubConnection
-      ?.stop()
-      .catch((err) => console.error('Error While Stopping Connection: ', err));
+    // this.signalRService.hubConnection?.off('askServerResponse');
+    // this.signalRService.hubConnection
+    //   ?.stop()
+    //   .catch((err) => console.error('Error While Stopping Connection: ', err));
   }
 }
