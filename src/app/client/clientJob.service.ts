@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { IClientJob } from '../Shared/Models/Client/IClient-Job';
-import { JobStatus } from '../Shared/Enums/JobStatus/JobStatus';
 
 @Injectable({
   providedIn: 'root',
@@ -15,32 +14,38 @@ export class ClientJobService {
       // {
       //   id: 1,
       //   title: 'مطلوب متخصص لعمل اسكربت علي موقع حجز مواعيد تأشيرة',
-      //   MinPrice: '25$',
-      //   MaxPrice: '50$',
-      //   status: JobStatus.Closed,
+      //   minBudget: '25$',
+      //   maxBudget: '50$',
+      //   status: '',
+      //   description: '',
       //   clientName: 'منار',
       //   clientImg: '../../assets/Images/Nerd-amico.png',
       //   catID: 1,
+      //   postTime: '',
       // },
       // {
       //   id: 2,
       //   title: ' تعديلات و إعادة تصميم موقع ووردبريس',
-      //   MinPrice: '10$',
-      //   MaxPrice: '30$',
-      //   status: JobStatus.Completed,
+      //   minBudget: '10$',
+      //   maxBudget: '30$',
+      //   status: '',
       //   clientName: 'أحمد',
       //   clientImg: '../../assets/Images/Nerd-amico.png',
       //   catID: 2,
+      //   description: '',
+      //   postTime: '',
       // },
       // {
       //   id: 3,
       //   title: 'موقع ومتجر إلكتروني لجمعية خيرية',
-      //   MinPrice: '20$',
-      //   MaxPrice: '40$',
-      //   status: JobStatus.Active,
+      //   minBudget: '20$',
+      //   maxBudget: '40$',
+      //   status: '',
       //   clientName: 'سارة',
       //   clientImg: '../../assets/Images/Nerd-amico.png',
       //   catID: 3,
+      //   description: '',
+      //   postTime: '',
       // },
     ];
     this.filteredJobs = [...this.ClientJob];
@@ -56,14 +61,14 @@ export class ClientJobService {
   }
 
   getClientJobByCatId(catId: number): IClientJob[] {
-    return this.ClientJob.filter((job) => job.categoryId == catId);
+    return this.ClientJob.filter((job) => job.catID == catId);
   }
 
   filterProjects(selectedCategories: number[]) {
     this.selectedCategories = selectedCategories;
     if (this.selectedCategories.length > 0) {
       return (this.filteredJobs = this.ClientJob.filter((job) =>
-        this.selectedCategories.includes(job.categoryId)
+        this.selectedCategories.includes(job.catID)
       ));
     } else {
       return (this.filteredJobs = [...this.ClientJob]);

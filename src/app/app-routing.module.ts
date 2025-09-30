@@ -48,6 +48,12 @@ const routes: Routes = [
   },
 
   {
+    path: 'offers',
+    loadChildren: () =>
+      import('./offers/offers.module').then((m) => m.OffersModule),
+  },
+
+  {
     path: 'galleryworks',
     loadChildren: () =>
       import('./work-gallary/work-gallary.module').then(

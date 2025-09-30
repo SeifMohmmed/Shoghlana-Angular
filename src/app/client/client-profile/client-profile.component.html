@@ -5,7 +5,7 @@
         <div class="block">
           <div class="block-head" style="direction: rtl">
             <p class="title text-primary">
-              <i class="fa fa-user"></i> حساب المستخدم
+              <i class="fas fa-user"></i> حساب المستخدم
             </p>
           </div>
           <div class="has-padding">
@@ -13,9 +13,8 @@
               <div class="img marked">
                 <img
                   class=""
-                  *ngIf="client?.image"
-                  [src]="'data:image/png;base64,' + client.image"
-                  alt="Profile image"
+                  src="data:image/png;base64,{{ client.image }}"
+                  alt=""
                 />
                 <!-- <svg width="82" height="82">
                                     <circle r="39" cx="41" cy="41" style="stroke-dashoffset: calc(250 - (250 * 67) / 100);"></circle>
@@ -28,12 +27,12 @@
               </p>
               <div class="">
                 <div class="dashboard-sidebar-tag">
-                  <span class="theme-color" style="font-weight: bold">
-                    {{ client.country || "—" }}
-                  </span>
+                  <span class="theme-color" style="font-weight: bold">{{
+                    client.country
+                  }}</span>
                 </div>
                 <p class="info-content">
-                  <i class="fa fa-layer-group text-primary p-1"></i>
+                  <i class="fas fa-layer-group text-primary p-1"></i>
                   <span style="font-weight: bold"
                     >مشتري مستوي:
                     <b class="text-primary p-1">{{ clientLevel }}</b></span
@@ -45,8 +44,8 @@
                 <!-- <a href="#" class="line checked"> -->
                 <span class="right">
                   <span class="icon text-primary"
-                    ><i class="fa fa-times-circle unverified-icon"></i
-                    ><i class="fa fa-phone m-2"></i
+                    ><i class="fas fa-times-circle unverified-icon"></i
+                    ><i class="fas fa-phone m-2"></i
                   ></span>
                   <span class="info">
                     <span class="title text-primary">توثيق الهاتف المحمول</span>
@@ -60,8 +59,8 @@
                 <!-- <a href="#" class="line checked"> -->
                 <span class="right">
                   <span class="icon text-primary"
-                    ><i class="fa fa-check-circle verified-icon"></i
-                    ><i class="fa fa-regular fa-envelope m-2"></i
+                    ><i class="fas fa-check-circle verified-icon"></i
+                    ><i class="fa-regular fa-envelope m-2"></i
                   ></span>
                   <span class="info">
                     <span class="title text-primary"
@@ -107,7 +106,7 @@
         >
           <li class="nav-item text-primary">
             <!-- <a href="https://kafiil.com/u/lisa_noman" class="active"> -->
-            <i class="fa fa-user"></i> نبذة عني
+            <i class="fas fa-user"></i> نبذة عني
             <!-- </a> -->
           </li>
         </ul>
@@ -134,9 +133,9 @@
               <div class="block collapse-block">
                 <div class="block-head" data-target=".block-body">
                   <p class="title col-10 text-primary" style="direction: rtl">
-                    <i class="fa fa-chart-pie"></i> الإحصائيات
+                    <i class="fas fa-chart-pie"></i> الإحصائيات
                   </p>
-                  <i class="fa fa-chevron-down"></i>
+                  <i class="fas fa-chevron-down"></i>
                 </div>
                 <div class="block-body col-12">
                   <table class="info-table col-12">
@@ -148,19 +147,15 @@
                             class="m-2 col-12"
                           >
                             <div class="col-8">
-                              <i class="fa fa-calendar d-inline m-1"></i>
+                              <i class="fas fa-calendar d-inline m-1"></i>
                               <span style="margin-right: 5px" class="d-inline"
                                 >تاريخ التسجيل</span
                               >
                             </div>
                             <span
                               class="mx-4 text-success d-inline offset-1 col-3"
-                              >{{
-                                client.registerationTime
-                                  ? formattedDateTime()
-                                  : "—"
-                              }}
-                            </span>
+                              >{{ formattedDateTime() }}</span
+                            >
                           </div>
                         </td>
                       </tr>
@@ -172,7 +167,7 @@
                             class="m-2"
                           >
                             <div class="col-8">
-                              <i class="fa fa-tasks m-1"></i>
+                              <i class="fas fa-tasks m-1"></i>
                               <span style="margin-right: 5px"
                                 >المشاريع المعروضة</span
                               >
@@ -191,7 +186,7 @@
                             class="m-2"
                           >
                             <div class="col-8">
-                              <i class="fa fa-check-circle m-1"></i>
+                              <i class="fas fa-check-circle m-1"></i>
                               <span style="margin-right: 5px"
                                 >المشاريع المكتملة</span
                               >
@@ -294,10 +289,10 @@
               <div class="block collapse-block">
                 <div class="block-head" data-target="#block-body-2">
                   <p class="title col-10 text-primary" style="direction: rtl">
-                    <i class="fa fa-tasks"></i>
+                    <i class="fas fa-tasks"></i>
                     المشاريع
                   </p>
-                  <i class="fa fa-chevron-down"></i>
+                  <i class="fas fa-chevron-down"></i>
                 </div>
                 <div id="block-body-2" class="block-body col-12">
                   <table class="info-table col-12">
@@ -318,25 +313,13 @@
                                   }}</span>
                                 </li>
                               </div>
-                              <span
-                                class="mx-4 offset-1 col-3"
-                                [ngClass]="{
-                                  'text-success':
-                                    job.status === jobStatus.Completed,
-                                  'text-danger':
-                                    job.status === jobStatus.Closed,
-                                  'text-primary':
-                                    job.status === jobStatus.Active
-                                }"
-                              >
-                                {{
-                                  job.status === jobStatus.Completed
-                                    ? "مكتمل"
-                                    : job.status === jobStatus.Closed
-                                    ? "مغلق"
-                                    : "قيد التنفيذ"
-                                }}
-                              </span>
+                              <!-- <span class="mx-4 offset-1 col-3" [ngClass]="{
+                                                            'text-success' : job.status === JobStatus.completed,
+                                                            'text-danger' : job.status === JobStatus.Closed,
+                                                            'text-primary' : job.status === JobStatus.Active
+                                                            }">
+                                                            {{job.status === JobStatus.completed? 'مكتمل': job.status === JobStatus.Closed? 'مغلق' : 'قيد التنفيذ' }}
+                                                        </span>  -->
                             </div>
                           </td>
                         </tr>
@@ -357,6 +340,3 @@
     </div>
   </div>
 </section>
-
-<!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="dist/index.js"></script> -->

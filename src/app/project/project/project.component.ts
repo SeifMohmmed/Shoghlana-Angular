@@ -11,12 +11,24 @@ import { JobStatus } from '../../Shared/Enums/JobStatus/JobStatus';
   templateUrl: './project.component.html',
   styleUrl: './project.component.scss',
 })
-export class ProjectComponent implements OnInit {
-  clientJob: IClientJob[] = [] as IClientJob[];
-  JobStatus = JobStatus;
+export class ProjectComponent implements OnInit, OnChanges {
+  clientJob: IClientJob[];
+  filteredJobs: IClientJob[];
   selectedCategories: number[] = [];
 
-  constructor(private projectService: ProjectService, private router: Router) {}
+  constructor(
+    private projectService: ProjectService,
+    private clientJobService: ClientJobService,
+    private router: Router
+  ) {}
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (this.selectedCategories) {
+      this.filteredJobs = this.clientJobService.filterProjects(
+        this.selectedCategories
+      );
+    }
+  }
 
   ngOnInit(): void {
     this.projectService.getAll().subscribe({
@@ -32,7 +44,14 @@ export class ProjectComponent implements OnInit {
     });
   }
 
-  navigateToDetails(id: Number) {
-    this.router.navigateByUrl(`/project/${id}`);
+  filterProjects(selectedCategories: number[]) {
+    this.selectedCategories = selectedCategories;
+    this.filteredJobs = this.clientJobService.filterProjects(
+      this.selectedCategories
+    );
+  }
+
+  navigateToDetails(id: number) {
+    this.router.navigate(['/project/', id]);
   }
 }
