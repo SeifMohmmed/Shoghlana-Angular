@@ -1,35 +1,35 @@
-import { Component, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { ICategory } from '../../Shared/Models/Category/ICategory';
 import { IClientJob } from '../../Shared/Models/Client/IClient-Job';
 import { Router } from '@angular/router';
 import { ClientJobService } from '../../client/clientJob.service';
+import { ProjectService } from '../project.service';
+import { JobStatus } from '../../Shared/Enums/JobStatus/JobStatus';
 
 @Component({
   selector: 'app-project',
   templateUrl: './project.component.html',
   styleUrl: './project.component.scss',
 })
-export class ProjectComponent implements OnChanges {
-  clientJob: IClientJob[];
-  filteredJobs: IClientJob[];
+export class ProjectComponent implements OnInit {
+  clientJob: IClientJob[] = [] as IClientJob[];
+  JobStatus = JobStatus;
   selectedCategories: number[] = [];
 
-  constructor(private clientService: ClientJobService, private router: Router) {
-    this.clientJob = this.clientService.getAllClientJobs();
-    this.filteredJobs = [...this.clientJob];
-  }
+  constructor(private projectService: ProjectService, private router: Router) {}
 
-  ngOnChanges() {
-    this.filteredJobs = this.clientService.filterProjects(
-      this.selectedCategories
-    );
-  }
-
-  filterProjects(selectedCategories: number[]) {
-    this.selectedCategories = selectedCategories;
-    this.filteredJobs = this.clientService.filterProjects(
-      this.selectedCategories
-    );
+  ngOnInit(): void {
+    this.projectService.getAll().subscribe({
+      next: (res) => {
+        if (res.isSuccess && Array.isArray(res.data)) {
+          this.clientJob = res.data;
+          console.log('title ', res.data);
+        } else {
+          console.error('Unexpected response structure:', res);
+        }
+      },
+      error: (err) => console.log(err),
+    });
   }
 
   navigateToDetails(id: Number) {

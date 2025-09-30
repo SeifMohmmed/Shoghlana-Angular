@@ -29,7 +29,7 @@
               <div class="">
                 <div class="dashboard-sidebar-tag">
                   <span class="theme-color" style="font-weight: bold">
-                    {{ client?.country || "—" }}
+                    {{ client.country || "—" }}
                   </span>
                 </div>
                 <p class="info-content">
@@ -120,7 +120,7 @@
                   style="line-height: 30px; font-size: 16px; direction: rtl"
                 >
                   {{
-                    client?.description
+                    client.description
                       ? client.description
                       : "لم يكتب نبذة شخصية عن نفسه"
                   }}
@@ -156,7 +156,7 @@
                             <span
                               class="mx-4 text-success d-inline offset-1 col-3"
                               >{{
-                                client?.registerationTime
+                                client.registerationTime
                                   ? formattedDateTime()
                                   : "—"
                               }}
@@ -178,7 +178,7 @@
                               >
                             </div>
                             <span class="mx-4 text-success offset-1 col-3">{{
-                              client?.jobsCount
+                              client.jobsCount
                             }}</span>
                           </div>
                         </td>
@@ -197,7 +197,7 @@
                               >
                             </div>
                             <span class="mx-4 text-success offset-1 col-3">{{
-                              client?.completedJobsCount
+                              client.completedJobsCount
                             }}</span>
                           </div>
                         </td>
@@ -217,7 +217,7 @@
                             </div>
                             <span class="mx-4 text-success offset-1 col-3"
                               >{{
-                                client?.jobsCount !== 0
+                                client.jobsCount !== 0
                                   ? (client.completedJobsCount /
                                       client.jobsCount) *
                                     100

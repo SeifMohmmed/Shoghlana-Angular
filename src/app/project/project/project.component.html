@@ -47,18 +47,18 @@
       </div>
       <div class="col-4">
         <h6 class="text-end">
-          المشاريع <i class="fa-brands fa-rocketchat"></i>
+          المشاريع<i class="fa-brands fa-rocketchat"></i>
         </h6>
       </div>
     </div>
     <div class="jobs-container mt-3">
       <div
         class="container job-item my-3 p-3 border rounded"
-        *ngFor="let job of filteredJobs"
+        *ngFor="let job of clientJob"
       >
         <div class="row justify-content-between align-items-center">
           <div class="col-4">
-            <p class="price">{{ job.MinPrice }} - {{ job.MaxPrice }}</p>
+            <p class="price">{{ job.minBudget }} $ - {{ job.maxBudget }} $</p>
             <button class="btn btn-success" (click)="navigateToDetails(job.id)">
               View Details
             </button>
@@ -66,29 +66,32 @@
           <div class="col-8 d-flex justify-content-end align-items-center">
             <div class="d-flex flex-column text-end me-3">
               <div class="d-flex">
-                <p class="status ms-1 p-1">{{ job.status }}</p>
+                <!-- <p class="status ms-1 p-1" >{{ job.status }}</p> -->
+                <p class="status ms-1 p-1">
+                  {{ job.status === JobStatus.Closed ? "مغلق" : "مفتوح" }}
+                </p>
+
                 <p class="title">{{ job.title }}</p>
               </div>
+              <p class="Descriptipn">{{ job.description }}</p>
               <div class="d-flex">
                 <p class="clientName">
                   <i class="fa-solid fa-user"></i> {{ job.clientName }}
                 </p>
               </div>
             </div>
-            <img
+            <!-- <img
               [src]="job.clientImg"
               height="50px"
               alt="{{ job.clientName }}"
               class="rounded-circle"
-            />
+            /> -->
           </div>
         </div>
       </div>
     </div>
   </div>
   <div class="col-4 justify-content-center align-items-center">
-    <app-project-side-bar
-      (categorySelectedChanged)="filterProjects($event)"
-    ></app-project-side-bar>
+    <!-- <app-project-side-bar (categorySelectedChanged)="filterProjects($event)"></app-project-side-bar> -->
   </div>
 </div>
