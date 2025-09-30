@@ -1,5 +1,6 @@
 export interface IRate {
-  feedback: any;
+  id: number;
+  feedback: string;
   value: number;
   jobId: number;
 }

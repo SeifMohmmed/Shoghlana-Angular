@@ -1,16 +1,20 @@
+import { ProposalStatus } from '../../Enums/ProposalStatus/ProposalStatus';
+import { IProposalImage } from './ProposalImage';
+
 export interface IProposal {
   id: number;
-  approvedTime: string;
-  deadline: string;
+  approvedTime: string; // known when the client approves
+  deadline?: string; // calulated after approve
+  duration: number; // given from the freelancer
+  status: ProposalStatus;
   description: string;
+  reposLinks?: string[];
+  images?: IProposalImage[];
   price: number;
-  reposLinks: string[];
-  images: string[];
   freelancerId: number;
   freelancerName: string;
   freelancerTitle: string;
   jobId: number;
-  status: number;
   jobTitle: string;
   clientName: string;
 }
