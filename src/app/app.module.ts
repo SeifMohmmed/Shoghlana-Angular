@@ -14,15 +14,13 @@ import { HomeComponent } from './home/home.component';
 import { NavbarComponent } from './Shared/Components/navbar/navbar.component';
 import { RouterLink, RouterLinkActive, RouterModule } from '@angular/router';
 import { JobModule } from './job/job.module';
+import { CommonModule } from '@angular/common';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import {
-  HTTP_INTERCEPTORS,
-  HttpClientModule,
-  provideHttpClient,
-  withFetch,
-  withInterceptors,
-} from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptor } from './Interceptors/auth.interceptor';
+import { OffersModule } from './offers/offers.module';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -39,9 +37,12 @@ import { AuthInterceptor } from './Interceptors/auth.interceptor';
     IdentityModule,
     FreelancersModule,
     JobModule,
+    OffersModule,
     RouterLink,
     RouterLinkActive,
     HttpClientModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot(),
   ],
   providers: [
     provideClientHydration(),

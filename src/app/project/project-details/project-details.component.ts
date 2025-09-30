@@ -1,31 +1,46 @@
 import { Component, OnInit } from '@angular/core';
 import { IClientJob } from '../../Shared/Models/Client/IClient-Job';
 import { ActivatedRoute } from '@angular/router';
-import { Location } from '@angular/common';
-import { ClientJobService } from '../../client/clientJob.service';
+import { DatePipe, Location } from '@angular/common';
+import { ProjectService } from '../project.service';
 
 @Component({
   selector: 'app-project-details',
   templateUrl: './project-details.component.html',
   styleUrl: './project-details.component.scss',
+  providers: [DatePipe],
 })
 export class ProjectDetailsComponent implements OnInit {
   currentId: number = 0;
-  clientJob: IClientJob[];
+  clientJob: IClientJob | undefined;
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private clientService: ClientJobService,
-    private location: Location
+    private projectService: ProjectService,
+    private location: Location,
+    private datePipe: DatePipe
   ) {}
 
   ngOnInit(): void {
-    this.currentId = Number(this.activatedRoute.snapshot.paramMap.get('id'));
-    console.log(this.currentId);
-    this.clientJob = this.clientService.getClientJobByCatId(this.currentId);
+    const id = +this.activatedRoute.snapshot.paramMap.get('id')!;
+
+    this.projectService.getById(id).subscribe({
+      next: (res) => {
+        if (res.isSuccess) {
+          this.clientJob = res.data;
+        } else {
+          console.error('Unexpected response structure:', res);
+        }
+      },
+      error: (err) => console.log(err),
+    });
   }
 
   goBack() {
     this.location.back();
+  }
+
+  getFormattedDate(date: string): string {
+    return this.datePipe.transform(date, 'dd-MM-yyyy, h:mm a') || date;
   }
 }

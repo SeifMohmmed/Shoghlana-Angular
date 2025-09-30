@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment.development';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ApiResponse } from '../Shared/Models/Response/ApiResponse';
 import { IClient } from '../Shared/Models/Client/Client';
+import { IClientJob } from '../Shared/Models/Client/IClient-Job';
 
 @Injectable({
   providedIn: 'root',
@@ -13,11 +14,15 @@ export class ProjectService {
 
   constructor(private http: HttpClient) {}
 
-  getAll(): Observable<ApiResponse<IClient>> {
-    return this.http.get<ApiResponse<IClient>>(this.baseURL + 'Job');
+  getAll(): Observable<ApiResponse<IClientJob>> {
+    return this.http.get<ApiResponse<IClientJob>>(this.baseURL + 'Job');
   }
 
-  getById(id: number): Observable<ApiResponse<IClient>> {
-    return this.http.get<ApiResponse<IClient>>(this.baseURL + 'Job' + id);
+  getById(id: number): Observable<ApiResponse<IClientJob>> {
+    let searchString = new HttpParams();
+    // searchString= searchString.append("projId",id)
+    // searchString= searchString.append("limit",5)
+    // return this.httpclient.get<any>(`${environment.baseUrl}/Job${id}`,{params:searchString})
+    return this.http.get<ApiResponse<IClientJob>>(this.baseURL + 'Job/' + id);
   }
 }
