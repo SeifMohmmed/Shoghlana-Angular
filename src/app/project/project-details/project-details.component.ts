@@ -4,6 +4,8 @@ import { ActivatedRoute } from '@angular/router';
 import { DatePipe, Location } from '@angular/common';
 import { ProjectService } from '../project.service';
 import { IProposal } from '../../Shared/Models/Proposal/Proposal';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ProposalService } from '../../offers/proposal.service';
 
 @Component({
   selector: 'app-project-details',
@@ -15,10 +17,13 @@ export class ProjectDetailsComponent implements OnInit {
   currentId: number = 0;
   clientJob: IClientJob | undefined;
   proposal: IProposal;
+  proposalForm: FormGroup;
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private projectService: ProjectService,
+    private proposalService: ProposalService,
+    private fb: FormBuilder,
     private location: Location,
     private datePipe: DatePipe
   ) {}
@@ -36,10 +41,29 @@ export class ProjectDetailsComponent implements OnInit {
       },
       error: (err) => console.log(err),
     });
+
+    this.proposalForm = this.fb.group({
+      deliveryTime: ['', [Validators.required]],
+      offerValue: ['', [Validators.required]],
+      offerDetails: ['', [Validators.required]],
+    });
   }
 
   goBack() {
     this.location.back();
+  }
+
+  addProposal(proposalForm: FormGroup) {
+    if (this.proposalForm?.valid) {
+      this.proposalService.postProposal(this.proposal).subscribe({
+        next: () => {
+          alert('done');
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
+    }
   }
 
   getFormattedDate(date: string): string {
