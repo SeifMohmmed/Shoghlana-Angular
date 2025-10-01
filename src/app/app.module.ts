@@ -24,6 +24,15 @@ import { ToastrModule } from 'ngx-toastr';
 import { StoreModule } from '@ngrx/store';
 import { counterReducer } from './Store/counter.reducer';
 
+import {
+  SocialLoginModule,
+  SocialAuthServiceConfig,
+} from 'angularx-social-login';
+import {
+  GoogleLoginProvider,
+  FacebookLoginProvider,
+} from 'angularx-social-login';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -47,11 +56,34 @@ import { counterReducer } from './Store/counter.reducer';
     ToastrModule.forRoot(),
     StoreModule.forRoot({ counter: counterReducer }),
     CommonModule,
+    SocialLoginModule,
   ],
   providers: [
     provideClientHydration(),
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    {
+      provide: 'SocialAuthServiceConfig',
+      useValue: {
+        autoLogin: false,
+        providers: [
+          {
+            id: GoogleLoginProvider.PROVIDER_ID,
+            provider: new GoogleLoginProvider(
+              '1679541546-jcmb01tm980bmijbjth4e3v7hp1bto31.apps.googleusercontent.com',
+              {
+                oneTapEnabled: false,
+                prompt: 'consent',
+              }
+            ),
+          },
+        ],
+        onError: (err) => {
+          console.error(err);
+        },
+      } as SocialAuthServiceConfig,
+    },
   ],
+
   bootstrap: [AppComponent],
   exports: [RouterModule],
 })
