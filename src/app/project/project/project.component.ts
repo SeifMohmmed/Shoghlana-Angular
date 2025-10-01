@@ -16,7 +16,11 @@ export class ProjectComponent implements OnInit {
   filteredJobs: IClientJob[];
   selectedCategories: number[] = [];
 
-  constructor(private projectService: ProjectService, private router: Router) {}
+  constructor(
+    private projectService: ProjectService,
+    private clientJobService: ClientJobService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.projectService.getAll().subscribe({
@@ -32,11 +36,19 @@ export class ProjectComponent implements OnInit {
     });
   }
 
+  filterProjects(selectedCategories: number[]) {
+    this.selectedCategories = selectedCategories;
+    this.filteredJobs = this.clientJobService.filterProjects(
+      this.selectedCategories
+    );
+  }
+
   navigateToDetails(id: number) {
     this.projectService.getById(id).subscribe({
       next: (res) => {
         if (res.isSuccess) {
           console.log('Project Details: ', res.data);
+          this.router.navigate(['project', id]);
         } else {
           console.error('Unexpected response structure: ', res);
         }
