@@ -21,6 +21,8 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptor } from './Interceptors/auth.interceptor';
 import { OffersModule } from './offers/offers.module';
 import { ToastrModule } from 'ngx-toastr';
+import { StoreModule } from '@ngrx/store';
+import { counterReducer } from './Store/counter.reducer';
 
 @NgModule({
   declarations: [
@@ -43,6 +45,8 @@ import { ToastrModule } from 'ngx-toastr';
     HttpClientModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
+    StoreModule.forRoot({ counter: counterReducer }),
+    CommonModule,
   ],
   providers: [
     provideClientHydration(),

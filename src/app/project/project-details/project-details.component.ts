@@ -3,6 +3,7 @@ import { IClientJob } from '../../Shared/Models/Client/IClient-Job';
 import { ActivatedRoute } from '@angular/router';
 import { DatePipe, Location } from '@angular/common';
 import { ProjectService } from '../project.service';
+import { IProposal } from '../../Shared/Models/Proposal/Proposal';
 
 @Component({
   selector: 'app-project-details',
@@ -13,6 +14,7 @@ import { ProjectService } from '../project.service';
 export class ProjectDetailsComponent implements OnInit {
   currentId: number = 0;
   clientJob: IClientJob | undefined;
+  proposal: IProposal;
 
   constructor(
     private activatedRoute: ActivatedRoute,
