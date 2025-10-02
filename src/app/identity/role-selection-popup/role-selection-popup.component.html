@@ -1,4 +1,5 @@
 <div
+  dir="rtl"
   *ngIf="showModel"
   class="modal"
   tabindex="-1"
@@ -10,29 +11,29 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title text-success">Welcome to Shoghlana</h5>
+        <h5 class="modal-title text-success">اهلا بيك فى شغلانة</h5>
       </div>
       <div class="modal-body">
-        <p>I want to act as:</p>
+        <p>تريد الدخول ك</p>
         <div class="row">
           <!-- <div class="col-4"> -->
-          <img src="../../../assets/Images/freelancer.webp" class="col-6" />
-          <img src="../../../assets/Images/client.jpg" class="col-6" />
+          <img src="../../../assets/Images/freelancer.webp" class="col-6 img" />
+          <img src="../../../assets/Images/client.jpg" class="col-6 img" />
           <!-- </div> -->
         </div>
 
         <div class="row">
           <button
-            class="btn btn-primary col-5 m-auto"
+            class="btn btn-success col-5 m-auto"
             (click)="selectRole(freelancer)"
           >
-            Freelancer
+            بائع
           </button>
           <button
             class="btn btn-secondary offset-1 col-5 m-auto my-2"
             (click)="selectRole(client)"
           >
-            Client
+            مشترى
           </button>
         </div>
       </div>
