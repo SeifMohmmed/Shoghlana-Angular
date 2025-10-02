@@ -31,7 +31,7 @@ const routes: Routes = [
   },
 
   {
-    path: 'job',
+    path: 'jobs',
     loadChildren: () => import('./job/job.module').then((m) => m.JobModule),
   },
 
