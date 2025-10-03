@@ -4,6 +4,8 @@ import { environment } from '../../environments/environment.development';
 import { Observable } from 'rxjs';
 import { ApiResponse } from '../Shared/Models/Response/ApiResponse';
 import { IJob } from '../Shared/Models/Job/IJob';
+import { JobStatus } from '../Shared/Enums/JobStatus/JobStatus';
+import { IPaginatedJobsRequestBody } from '../Shared/Models/PaginatedJobs/PaginatedJobsRequestBody';
 
 @Injectable({
   providedIn: 'root',
@@ -17,29 +19,28 @@ export class JobService {
   }
 
   getPaginatedJobs(
-    page: number = 1,
-    pageSize: number = 5,
-    categoryId: number = 0,
     minBudget: number = 0,
     maxBudget: number = 0,
     clientId: number = 0,
     freelancerId: number = 0,
-    includes: string[] | null = null
+    page: number = 1,
+    pageSize: number = 5,
+    status: JobStatus = JobStatus.Active,
+    requestBody: IPaginatedJobsRequestBody = {
+      CategoriesIDs: [],
+      Includes: [],
+    }
   ): Observable<ApiResponse<any>> {
     let params = new HttpParams()
-      .set('MinBudget', minBudget.toString())
-      .set('MaxBudget', maxBudget.toString())
-      .set('CategoryId', categoryId.toString())
-      .set('ClientId', clientId.toString())
-      .set('FreelancerId', freelancerId.toString())
-      .set('page', page.toString())
-      .set('pageSize', pageSize.toString());
+      .set('MinBudget', (minBudget ?? 0).toString())
+      .set('MaxBudget', (maxBudget ?? 0).toString())
+      .set('ClientId', (clientId ?? 0).toString())
+      .set('FreelancerId', (freelancerId ?? 0).toString())
+      .set('page', (page ?? 1).toString())
+      .set('pageSize', (pageSize ?? 5).toString())
+      .set('status', (status ?? 5).toString());
 
-    if (includes) {
-      params = params.set('includes', includes.join(','));
-    }
-
-    return this.http.get<any>(this.baseURL + `Job/pagination`, {
+    return this.http.post<any>(this.baseURL + `Job/pagination`, requestBody, {
       params,
     });
   }

@@ -47,6 +47,8 @@ export class ProjectDetailsComponent implements OnInit {
       Description: ['', [Validators.required]],
       Price: ['', [Validators.required]],
       Duration: ['', [Validators.required]],
+      JobId: ['', [Validators.required]],
+      FreelancerId: ['', [Validators.required]],
     });
   }
 
@@ -55,24 +57,36 @@ export class ProjectDetailsComponent implements OnInit {
   }
 
   addProposal() {
+    let formData: FormData;
+    formData = new FormData();
+
+    formData.append('Duration', this.proposalForm.get('Duration')?.value);
+    formData.append('Description', this.proposalForm.get('Description')?.value);
+    formData.append('Price', this.proposalForm.get('Price')?.value);
+    formData.append('JobId', this.proposalForm.get('JobId')?.value);
+    formData.append(
+      'FreelancerId',
+      this.proposalForm.get('FreelancerId')?.value
+    );
+
     console.log('Submitting proposal...');
     if (this.proposalForm.valid) {
-      const payload = this.proposalForm.value;
-      console.log('Form is valid:', payload);
-      this.proposalService.postProposal(payload).subscribe({
+      // const payload = this.proposalForm.value;
+      // console.log('Form is valid:', payload);
+      this.proposalService.postProposal(formData).subscribe({
         next: () => {
           Swal.fire({
-            title: 'wow!',
-            text: 'تم ارسال طلبك بنجاح',
+            //title: 'wow!',
+            text: ':) ارسال عرضك بنجاح',
             icon: 'success',
           });
         },
         error: (err) => {
           console.log('Error response:', err);
-          console.log('Payload sent:', payload);
+          console.log('Payload sent:', formData);
           // alert('Failed to submit proposal');
           Swal.fire({
-            title: 'فشل ارسال الطلب',
+            title: ':( فشل ارسال الطلب',
             icon: 'error',
             confirmButtonText: 'حسناً',
             confirmButtonColor: '#d33', // red button
