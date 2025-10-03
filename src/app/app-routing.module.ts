@@ -54,6 +54,12 @@ const routes: Routes = [
   },
 
   {
+    path: 'addservice',
+    loadChildren: () =>
+      import('./addservice/addservice.module').then((m) => m.AddserviceModule),
+  },
+
+  {
     path: 'galleryworks',
     loadChildren: () =>
       import('./work-gallary/work-gallary.module').then(

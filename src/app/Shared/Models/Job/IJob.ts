@@ -24,6 +24,7 @@ export interface IJob {
   acceptedFreelancerName?: string;
   clientId: number;
   clientName: string;
+  clientImage: string;
   categoryId: number;
   category: ICategory;
   categoryTitle: string;
