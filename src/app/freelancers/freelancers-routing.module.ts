@@ -5,6 +5,7 @@ import { FreelancerPortfolioComponent } from './freelancer-portfolio/freelancer-
 import { FreelancerWorkHistoryComponent } from './freelancer-work-history/freelancer-work-history.component';
 import { FreelancerProfileComponent } from './freelancer-profile/freelancer-profile.component';
 import { FreelancerEditProfileComponent } from './freelancer-edit-profile/freelancer-edit-profile.component';
+import { WorkComponent } from './work/work.component';
 
 const routes: Routes = [
   {
@@ -20,6 +21,7 @@ const routes: Routes = [
       { path: 'portfolio', component: FreelancerPortfolioComponent },
       { path: 'workhistory', component: FreelancerWorkHistoryComponent },
       { path: 'edit', component: FreelancerEditProfileComponent },
+      { path: 'works', component: WorkComponent },
     ],
   },
 ];
