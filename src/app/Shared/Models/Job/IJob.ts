@@ -30,4 +30,6 @@ export interface IJob {
   categoryTitle: string;
   proposalsCount: number;
   rate?: IRate;
+  formattedPostTime?: string;
+  showFeedback?: boolean;
 }

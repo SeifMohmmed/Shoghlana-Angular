@@ -25,4 +25,9 @@ export class ProjectService {
     // return this.httpclient.get<any>(`${environment.baseUrl}/Job${id}`,{params:searchString})
     return this.http.get<ApiResponse<IClientJob>>(this.baseURL + 'Job/' + id);
   }
+
+  getByFreelancerId(id: number) {
+    console.log(id);
+    return this.http.get(this.baseURL + 'Project/freelancer/' + id);
+  }
 }
