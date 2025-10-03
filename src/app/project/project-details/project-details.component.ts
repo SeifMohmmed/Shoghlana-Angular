@@ -6,6 +6,7 @@ import { ProjectService } from '../project.service';
 import { IProposal } from '../../Shared/Models/Proposal/Proposal';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ProposalService } from '../../offers/proposal.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-project-details',
@@ -43,9 +44,9 @@ export class ProjectDetailsComponent implements OnInit {
     });
 
     this.proposalForm = this.fb.group({
-      deliveryTime: ['', [Validators.required]],
-      offerValue: ['', [Validators.required]],
-      offerDetails: ['', [Validators.required]],
+      Description: ['', [Validators.required]],
+      Price: ['', [Validators.required]],
+      Duration: ['', [Validators.required]],
     });
   }
 
@@ -53,16 +54,33 @@ export class ProjectDetailsComponent implements OnInit {
     this.location.back();
   }
 
-  addProposal(proposalForm: FormGroup) {
-    if (this.proposalForm?.valid) {
-      this.proposalService.postProposal(this.proposal).subscribe({
+  addProposal() {
+    console.log('Submitting proposal...');
+    if (this.proposalForm.valid) {
+      const payload = this.proposalForm.value;
+      console.log('Form is valid:', payload);
+      this.proposalService.postProposal(payload).subscribe({
         next: () => {
-          alert('done');
+          Swal.fire({
+            title: 'wow!',
+            text: 'تم ارسال طلبك بنجاح',
+            icon: 'success',
+          });
         },
         error: (err) => {
-          console.log(err);
+          console.log('Error response:', err);
+          console.log('Payload sent:', payload);
+          // alert('Failed to submit proposal');
+          Swal.fire({
+            title: 'فشل ارسال الطلب',
+            icon: 'error',
+            confirmButtonText: 'حسناً',
+            confirmButtonColor: '#d33', // red button
+          });
         },
       });
+    } else {
+      console.log('Form is Invalid');
     }
   }
 
