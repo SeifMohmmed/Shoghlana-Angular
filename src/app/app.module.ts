@@ -14,15 +14,24 @@ import { HomeComponent } from './home/home.component';
 import { NavbarComponent } from './Shared/Components/navbar/navbar.component';
 import { RouterLink, RouterLinkActive, RouterModule } from '@angular/router';
 import { JobModule } from './job/job.module';
-import { HighlightDirective } from './Shared/Directives/highlight.directive';
-import {
-  HTTP_INTERCEPTORS,
-  HttpClientModule,
-  provideHttpClient,
-  withFetch,
-  withInterceptors,
-} from '@angular/common/http';
+import { CommonModule } from '@angular/common';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptor } from './Interceptors/auth.interceptor';
+import { OffersModule } from './offers/offers.module';
+import { ToastrModule } from 'ngx-toastr';
+import { StoreModule } from '@ngrx/store';
+import { counterReducer } from './Store/counter.reducer';
+
+import {
+  SocialLoginModule,
+  SocialAuthServiceConfig,
+} from 'angularx-social-login';
+import {
+  GoogleLoginProvider,
+  FacebookLoginProvider,
+} from 'angularx-social-login';
 
 @NgModule({
   declarations: [
@@ -39,14 +48,42 @@ import { AuthInterceptor } from './Interceptors/auth.interceptor';
     IdentityModule,
     FreelancersModule,
     JobModule,
+    OffersModule,
     RouterLink,
     RouterLinkActive,
     HttpClientModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot(),
+    StoreModule.forRoot({ counter: counterReducer }),
+    CommonModule,
+    SocialLoginModule,
   ],
   providers: [
     provideClientHydration(),
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    {
+      provide: 'SocialAuthServiceConfig',
+      useValue: {
+        autoLogin: false,
+        providers: [
+          {
+            id: GoogleLoginProvider.PROVIDER_ID,
+            provider: new GoogleLoginProvider(
+              '1679541546-jcmb01tm980bmijbjth4e3v7hp1bto31.apps.googleusercontent.com',
+              {
+                oneTapEnabled: false,
+                prompt: 'consent',
+              }
+            ),
+          },
+        ],
+        onError: (err) => {
+          console.error(err);
+        },
+      } as SocialAuthServiceConfig,
+    },
   ],
+
   bootstrap: [AppComponent],
   exports: [RouterModule],
 })

@@ -1,3 +1,5 @@
+<app-role-selection-popup *ngIf="userRole == null"></app-role-selection-popup>
+
 <div dir="rtl" class="container-fluid">
   <div class="row">
     <div class="col-md-6 float-right mt-5 me-3">
@@ -185,7 +187,16 @@
             </span>
           </div>
         </div>
-
+        <!-- <div class="flex-column">
+          <label for="phone"> 2الهاتف</label>
+        </div>
+        <div formArrayName=" phoneNumbers">
+          <div class="inputForm" *ngFor="let ph of Phones.controls; let i=index">
+            <i class="fa-solid fa-phone me-1"></i>
+            <input formControlName="i" placeholder="الهاتف" id="phoneNumber" class="input" type="text">
+          </div>
+        </div>
+        <button class="btn btn-success" (click)="addnewphone">+</button> -->
         <!-- ================= SUBMIT ================= -->
         <button [disabled]="RegisterForm.invalid" type="submit" class="btn">
           <i *ngIf="isLoading" class="fas fa-spinner fa-spin"></i>
@@ -196,9 +207,16 @@
         <p class="p line">أو</p>
 
         <div class="flex-row">
-          <button class="btn google bg-danger">
-            <i class="fa fa-google" aria-hidden="true"></i> سجل بواسطة جوجل
-          </button>
+          <!-- <button class="google-signin-btn"> -->
+          <!-- <asl-google-signin-button
+            type="standard"
+            class="google-signin-btn d-block m-auto"
+            size="large"
+          >
+            <i class="fab fa-google"></i>
+            سجل بواسطة جوجل
+          </asl-google-signin-button> -->
+          <!-- </button> -->
         </div>
       </form>
     </div>

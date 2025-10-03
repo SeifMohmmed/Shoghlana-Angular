@@ -13,9 +13,8 @@
               <div class="img marked">
                 <img
                   class=""
-                  *ngIf="client?.image"
-                  [src]="'data:image/png;base64,' + client.image"
-                  alt="Profile image"
+                  src="data:image/png;base64,{{ client.image }}"
+                  alt=""
                 />
                 <!-- <svg width="82" height="82">
                                     <circle r="39" cx="41" cy="41" style="stroke-dashoffset: calc(250 - (250 * 67) / 100);"></circle>
@@ -28,9 +27,9 @@
               </p>
               <div class="">
                 <div class="dashboard-sidebar-tag">
-                  <span class="theme-color" style="font-weight: bold">
-                    {{ client?.country || "—" }}
-                  </span>
+                  <span class="theme-color" style="font-weight: bold">{{
+                    client.country
+                  }}</span>
                 </div>
                 <p class="info-content">
                   <i class="fa fa-layer-group text-primary p-1"></i>
@@ -120,7 +119,7 @@
                   style="line-height: 30px; font-size: 16px; direction: rtl"
                 >
                   {{
-                    client?.description
+                    client.description
                       ? client.description
                       : "لم يكتب نبذة شخصية عن نفسه"
                   }}
@@ -155,12 +154,8 @@
                             </div>
                             <span
                               class="mx-4 text-success d-inline offset-1 col-3"
-                              >{{
-                                client?.registerationTime
-                                  ? formattedDateTime()
-                                  : "—"
-                              }}
-                            </span>
+                              >{{ formattedDateTime() }}</span
+                            >
                           </div>
                         </td>
                       </tr>
@@ -178,7 +173,7 @@
                               >
                             </div>
                             <span class="mx-4 text-success offset-1 col-3">{{
-                              client?.jobsCount
+                              client.jobsCount
                             }}</span>
                           </div>
                         </td>
@@ -197,7 +192,7 @@
                               >
                             </div>
                             <span class="mx-4 text-success offset-1 col-3">{{
-                              client?.completedJobsCount
+                              client.completedJobsCount
                             }}</span>
                           </div>
                         </td>
@@ -210,14 +205,14 @@
                             class="m-2"
                           >
                             <div class="col-8">
-                              <i class="fa-solid fa-percent m-1"></i>
+                              <i class="fa fa-solid fa-percent m-1"></i>
                               <span style="margin-right: 5px"
                                 >معدل التوظيف</span
                               >
                             </div>
                             <span class="mx-4 text-success offset-1 col-3"
                               >{{
-                                client?.jobsCount !== 0
+                                client.jobsCount !== 0
                                   ? (client.completedJobsCount /
                                       client.jobsCount) *
                                     100
@@ -318,25 +313,13 @@
                                   }}</span>
                                 </li>
                               </div>
-                              <span
-                                class="mx-4 offset-1 col-3"
-                                [ngClass]="{
-                                  'text-success':
-                                    job.status === jobStatus.Completed,
-                                  'text-danger':
-                                    job.status === jobStatus.Closed,
-                                  'text-primary':
-                                    job.status === jobStatus.Active
-                                }"
-                              >
-                                {{
-                                  job.status === jobStatus.Completed
-                                    ? "مكتمل"
-                                    : job.status === jobStatus.Closed
-                                    ? "مغلق"
-                                    : "قيد التنفيذ"
-                                }}
-                              </span>
+                              <!-- <span class="mx-4 offset-1 col-3" [ngClass]="{
+                                                            'text-success' : job.status === JobStatus.completed,
+                                                            'text-danger' : job.status === JobStatus.Closed,
+                                                            'text-primary' : job.status === JobStatus.Active
+                                                            }">
+                                                            {{job.status === JobStatus.completed? 'مكتمل': job.status === JobStatus.Closed? 'مغلق' : 'قيد التنفيذ' }}
+                                                        </span>  -->
                             </div>
                           </td>
                         </tr>
@@ -357,6 +340,3 @@
     </div>
   </div>
 </section>
-
-<!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="dist/index.js"></script> -->

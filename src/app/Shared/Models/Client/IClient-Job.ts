@@ -1,12 +1,12 @@
-import { JobStatus } from '../../Enums/JobStatus/JobStatus';
-
 export interface IClientJob {
   id: number;
-  title: String;
-  MinPrice: string;
-  MaxPrice: string;
-  status: JobStatus;
+  title: string;
+  minBudget: string;
+  maxBudget: string;
+  description: string;
+  status: string;
   clientName: string;
   clientImg: string;
   catID: number;
+  postTime: string;
 }

@@ -7,6 +7,9 @@ import {
 } from '@angular/forms';
 import { IdentityService } from '../identity.service';
 import { Router } from '@angular/router';
+import { GoogleAuthData } from '../../Shared/Models/GoogleAuth/GoogleAuthData';
+import { UserRoleService } from '../user-role.service';
+import { SocialAuthService } from 'angularx-social-login';
 
 @Component({
   selector: 'app-register',
@@ -17,15 +20,57 @@ export class RegisterComponent implements OnInit {
   isLoading: boolean = false;
   apiError: string = '';
   RegisterForm: FormGroup;
+  googleAuthData: GoogleAuthData;
+  userRole: number;
 
   constructor(
     private fb: FormBuilder,
     private identityService: IdentityService,
+    private socialAuthService: SocialAuthService,
+    private userRoleService: UserRoleService,
     private router: Router
   ) {}
 
   ngOnInit(): void {
     this.formValidator();
+    this.userRole = this.userRoleService.get();
+    this.socialAuthService.authState.subscribe({
+      next: (res) => {
+        console.log(res);
+        console.log('Role Before adding to google obj ' + this.userRole);
+        // this.googleAuthData = res
+        this.googleAuthData.email = res.email;
+        this.googleAuthData.firstName = res.firstName;
+        this.googleAuthData.id = res.id;
+        this.googleAuthData.idToken = res.idToken;
+        this.googleAuthData.name = res.name;
+        this.googleAuthData.photoUrl = res.photoUrl;
+        //  this.googleAuthData.role = this.UserRole
+
+        console.log('role in google obj google' + this.googleAuthData.role);
+
+        console.log(this.googleAuthData);
+
+        this.identityService
+          .googleAuthentication(this.googleAuthData)
+          .subscribe({
+            next: (res) => {
+              console.log(res);
+              if (res.isSuccess) {
+                localStorage.setItem('UserToken', res.data.idToken);
+                this.router.navigateByUrl('');
+              }
+            },
+            error: (err) => console.log(err),
+          });
+      },
+      error: (err) => {
+        console.log(err);
+      },
+      complete: () => {
+        console.log('Completed');
+      },
+    });
   }
 
   formValidator() {
@@ -73,5 +118,9 @@ export class RegisterComponent implements OnInit {
         },
       });
     }
+  }
+
+  onRoleSelected(role: string) {
+    console.log(role);
   }
 }

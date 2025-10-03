@@ -31,7 +31,7 @@ const routes: Routes = [
   },
 
   {
-    path: 'job',
+    path: 'jobs',
     loadChildren: () => import('./job/job.module').then((m) => m.JobModule),
   },
 
@@ -45,6 +45,18 @@ const routes: Routes = [
     path: 'client',
     loadChildren: () =>
       import('./client/client.module').then((m) => m.ClientModule),
+  },
+
+  {
+    path: 'offers',
+    loadChildren: () =>
+      import('./offers/offers.module').then((m) => m.OffersModule),
+  },
+
+  {
+    path: 'addservice',
+    loadChildren: () =>
+      import('./addservice/addservice.module').then((m) => m.AddserviceModule),
   },
 
   {

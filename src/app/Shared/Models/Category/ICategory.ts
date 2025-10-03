@@ -1,5 +1,9 @@
+import { IJob } from '../Job/IJob';
+
 export interface ICategory {
   id: number;
-  name: string;
+  description: string;
+  title: string;
   selected?: boolean;
+  jobs?: IJob[];
 }

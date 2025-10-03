@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { IClientJob } from '../Shared/Models/Client/IClient-Job';
-import { JobStatus } from '../Shared/Enums/JobStatus/JobStatus';
 
 @Injectable({
   providedIn: 'root',
@@ -12,36 +11,42 @@ export class ClientJobService {
 
   constructor() {
     this.ClientJob = [
-      {
-        id: 1,
-        title: 'مطلوب متخصص لعمل اسكربت علي موقع حجز مواعيد تأشيرة',
-        MinPrice: '25$',
-        MaxPrice: '50$',
-        status: JobStatus.Closed,
-        clientName: 'منار',
-        clientImg: '../../assets/Images/Nerd-amico.png',
-        catID: 1,
-      },
-      {
-        id: 2,
-        title: ' تعديلات و إعادة تصميم موقع ووردبريس',
-        MinPrice: '10$',
-        MaxPrice: '30$',
-        status: JobStatus.Completed,
-        clientName: 'أحمد',
-        clientImg: '../../assets/Images/Nerd-amico.png',
-        catID: 2,
-      },
-      {
-        id: 3,
-        title: 'موقع ومتجر إلكتروني لجمعية خيرية',
-        MinPrice: '20$',
-        MaxPrice: '40$',
-        status: JobStatus.Active,
-        clientName: 'سارة',
-        clientImg: '../../assets/Images/Nerd-amico.png',
-        catID: 3,
-      },
+      // {
+      //   id: 1,
+      //   title: 'مطلوب متخصص لعمل اسكربت علي موقع حجز مواعيد تأشيرة',
+      //   minBudget: '25$',
+      //   maxBudget: '50$',
+      //   status: '',
+      //   description: '',
+      //   clientName: 'منار',
+      //   clientImg: '../../assets/Images/Nerd-amico.png',
+      //   catID: 1,
+      //   postTime: '',
+      // },
+      // {
+      //   id: 2,
+      //   title: ' تعديلات و إعادة تصميم موقع ووردبريس',
+      //   minBudget: '10$',
+      //   maxBudget: '30$',
+      //   status: '',
+      //   clientName: 'أحمد',
+      //   clientImg: '../../assets/Images/Nerd-amico.png',
+      //   catID: 2,
+      //   description: '',
+      //   postTime: '',
+      // },
+      // {
+      //   id: 3,
+      //   title: 'موقع ومتجر إلكتروني لجمعية خيرية',
+      //   minBudget: '20$',
+      //   maxBudget: '40$',
+      //   status: '',
+      //   clientName: 'سارة',
+      //   clientImg: '../../assets/Images/Nerd-amico.png',
+      //   catID: 3,
+      //   description: '',
+      //   postTime: '',
+      // },
     ];
     this.filteredJobs = [...this.ClientJob];
   }
