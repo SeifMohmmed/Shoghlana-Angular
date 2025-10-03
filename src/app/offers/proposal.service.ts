@@ -22,4 +22,8 @@ export class ProposalService {
       this.baseURL + 'Proposal' + id
     );
   }
+
+  postProposal(proposalData: any) {
+    return this.http.post(this.baseURL + 'Proposal', proposalData);
+  }
 }
