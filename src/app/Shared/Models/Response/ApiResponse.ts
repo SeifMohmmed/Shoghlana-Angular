@@ -5,4 +5,5 @@ export interface ApiResponse<T> {
   status: number;
   token: any;
   expired: any;
+  refreshToken?: string;
 }

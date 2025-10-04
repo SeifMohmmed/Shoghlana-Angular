@@ -60,6 +60,18 @@ const routes: Routes = [
   },
 
   {
+    path: 'live',
+    loadChildren: () =>
+      import('./signal-r/signal-r.module').then((m) => m.SignalRModule),
+  },
+
+  {
+    path: 'addservice',
+    loadChildren: () =>
+      import('./addservice/addservice.module').then((m) => m.AddserviceModule),
+  },
+
+  {
     path: 'galleryworks',
     loadChildren: () =>
       import('./work-gallary/work-gallary.module').then(

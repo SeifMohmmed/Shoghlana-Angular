@@ -42,7 +42,7 @@
       <div class="col-8 text-end ms-3">
         <h3 class="mb-4 mx-2">إضافة مشروع</h3>
         <div class="container my-2 py-2">
-          <form>
+          <form [formGroup]="projectForm" (ngSubmit)="addProject()">
             <div class="col-11">
               <label for="Project-Title">عنوان المشروع</label>
               <input
@@ -50,6 +50,7 @@
                 id="Project-Title"
                 name="Project-Title"
                 class="w-100"
+                formControlName="title"
                 required
               />
               <small>أدرج عنوانا موجزا يصف مشروعك بشكل دقيق</small>
@@ -127,12 +128,13 @@
               </div>
             </div>
             <div class="col-11 mt-3">
-              <label for="offer-details">قم بوصف المشروع</label>
+              <label for="description">قم بوصف المشروع</label>
               <textarea
-                id="offer-details"
-                name="offer-details"
+                id="description"
+                name="description"
                 class="w-100"
                 rows="4"
+                formControlName="description"
                 required
               ></textarea>
               <small>أدرج وصفا مفصّلا ودقيقا لمشروعك.</small>
@@ -140,32 +142,44 @@
 
             <div class="d-flex">
               <div class="col-5 ms-5">
-                <label for="offer-value"> الميزانية المتوقعة </label>
-                <select class="form-select" required>
-                  <option>1-5</option>
-                  <option>2-5</option>
-                  <option>3</option>
-                  <option>4</option>
-                </select>
-                <small>اختر ميزانية مناسبة لتحصل على عروض جيدة</small>
-              </div>
-              <div class="col-6">
-                <label for="delivery-time">
-                  المدة المتوقعة للتسليم <span> (بالأيام) </span></label
-                >
+                <label for="offer-value">
+                  الحد الادنى للميزانية المتوقعة
+                </label>
                 <input
                   type="number"
-                  id="delivery-time"
-                  name="delivery-time"
-                  class="w-75"
-                  required
+                  id="minBudget"
+                  name="minBudget"
+                  formControlName="minBudget"
                 />
-                <br />
-                <small>متى تحتاج استلام مشروعك</small>
+
+                <small>اختر ميزانية مناسبة لتحصل على عروض جيدة</small>
+              </div>
+              <div class="col-5">
+                <label for="offer-value">
+                  الحد الاعلي للميزانية المتوقعة
+                </label>
+                <input
+                  type="number"
+                  id="maxBudget"
+                  name="maxBudget"
+                  formControlName="maxBudget"
+                />
               </div>
             </div>
-            <div class="my-3">
-              <input type="file" id="file1" name="upload" />
+            <div>
+              <label for="delivery-time">
+                المدة المتوقعة للتسليم <span> (بالأيام) </span></label
+              >
+              <input
+                type="number"
+                id="delivery-time"
+                name="delivery-time"
+                class="w-75"
+                required
+                formControlName="durationInDays"
+              />
+              <br />
+              <small>متى تحتاج استلام مشروعك</small>
             </div>
 
             <button type="submit" class="btn btn-success mt-3">أضف عرضك</button>

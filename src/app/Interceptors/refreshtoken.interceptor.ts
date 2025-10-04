@@ -1,20 +1,36 @@
 import {
+  HttpErrorResponse,
   HttpEvent,
-  HttpHandler,
-  HttpInterceptor,
+  HttpHandlerFn,
   HttpRequest,
 } from '@angular/common/http';
-import { Injector } from '@angular/core';
-import { Router } from 'express';
-import { Observable } from 'rxjs';
+import { inject } from '@angular/core';
+import { catchError, Observable, switchMap, throwError } from 'rxjs';
+import { IdentityService } from '../identity/identity.service';
 
-export class Refreshtoken implements HttpInterceptor {
-  constructor(private inject: Injector, private router: Router) {}
-
-  intercept(
-    req: HttpRequest<any>,
-    next: HttpHandler
-  ): Observable<HttpEvent<any>> {
-    throw new Error('Method not implemented.');
-  }
+export function refreshTokenInterceptor(
+  req: HttpRequest<any>,
+  next: HttpHandlerFn
+): Observable<HttpEvent<any>> {
+  const identityService = inject(IdentityService);
+  return next(req).pipe(
+    catchError((error: HttpErrorResponse) => {
+      if (error.status === 401) {
+        return identityService.refreshToken().pipe(
+          switchMap((newToken: any) => {
+            const newRequest = req.clone({
+              setHeaders: {
+                Authorization: `Bearer ${newToken}`,
+              },
+            });
+            return next(newRequest);
+          }),
+          catchError((err) => {
+            return throwError(err);
+          })
+        );
+      }
+      return throwError(error);
+    })
+  );
 }
