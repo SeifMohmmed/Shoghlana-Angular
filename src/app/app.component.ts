@@ -8,21 +8,25 @@ import { SignalRService } from './Shared/Services/signal-r.service';
 })
 export class AppComponent implements OnInit, OnDestroy {
   title = 'Shoghlana';
+  notifications: any[] = [];
 
-  constructor() {} //(public signalRService: SignalRService) {}
+  constructor(private signalRService: SignalRService) {}
 
   ngOnInit(): void {
-    // this.signalRService.startConnection();
-    // setTimeout(() => {
-    //   this.signalRService.askServerListener();
-    //   this.signalRService.askServer();
-    // }, 2000);
+    this.signalRService.startConnection();
+    setTimeout(() => {
+      this.signalRService.addNotificationListener((data: any) => {
+        this.notifications.push(data.message);
+      });
+    }, 2000);
   }
 
   ngOnDestroy(): void {
-    // this.signalRService.hubConnection?.off('askServerResponse');
-    // this.signalRService.hubConnection
-    //   ?.stop()
-    //   .catch((err) => console.error('Error While Stopping Connection: ', err));
+    this.signalRService.startConnection();
+  }
+
+  // For testing: Method to manually send a notification
+  sendTestNotification(): void {
+    this.signalRService.triggerNotification('Test Notification from Angular');
   }
 }
