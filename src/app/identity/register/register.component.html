@@ -170,7 +170,7 @@
             <span
               class="text-danger small"
               *ngIf="
-                RegisterForm.get('repeatPassword')?.hasError('required') &&
+                RegisterForm.get('repeatPassword')?.hasError('pattern') &&
                 RegisterForm.get('repeatPassword')?.touched
               "
             >
@@ -199,7 +199,7 @@
         <button class="btn btn-success" (click)="addnewphone">+</button> -->
         <!-- ================= SUBMIT ================= -->
         <button [disabled]="RegisterForm.invalid" type="submit" class="btn">
-          <i *ngIf="isLoading" class="fas fa-spinner fa-spin"></i>
+          <i *ngIf="isLoading" class="fa fa-spinner fa-spin"></i>
           إنشاء حساب
         </button>
 

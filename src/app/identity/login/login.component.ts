@@ -42,10 +42,13 @@ export class LoginComponent implements OnInit {
       console.log(LoginForm.value);
 
       this.identityService.login(LoginForm.value).subscribe({
-        next: (value: any) => {
-          console.log('This is response ', value);
+        next: (response: any) => {
+          console.log('This is response ', response);
 
-          if (value.isSuccess) {
+          if (response.isSuccess) {
+            this.isLoading = false;
+            localStorage.setItem('token', response.token);
+            this.identityService.decodeUserData();
             this.isLoading = false;
             this.router.navigateByUrl('/');
           }

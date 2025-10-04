@@ -3,11 +3,13 @@ import { RouterModule, Routes } from '@angular/router';
 import { ProjectComponent } from './project/project.component';
 import { ProjectDetailsComponent } from './project-details/project-details.component';
 import { AddprojectComponent } from './addproject/addproject.component';
+import { authGuard } from '../Guards/auth.guard';
 
 const routes: Routes = [
   {
     path: '',
     component: ProjectComponent,
+    canActivate: [authGuard],
   },
 
   {
