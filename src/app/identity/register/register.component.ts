@@ -10,6 +10,8 @@ import { Router } from '@angular/router';
 import { GoogleAuthData } from '../../Shared/Models/GoogleAuth/GoogleAuthData';
 import { UserRoleService } from '../user-role.service';
 import { SocialAuthService } from 'angularx-social-login';
+import Swal from 'sweetalert2';
+import { text } from 'stream/consumers';
 
 @Component({
   selector: 'app-register',
@@ -22,6 +24,8 @@ export class RegisterComponent implements OnInit {
   RegisterForm: FormGroup;
   googleAuthData: GoogleAuthData;
   userRole: number;
+  email: string = '';
+  showModel2: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -88,10 +92,20 @@ export class RegisterComponent implements OnInit {
         '',
         [
           Validators.required,
-          Validators.pattern(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/),
+          Validators.pattern(
+            /^(?=.*[0-9])(?=.*[#$@!.\-])[A-Za-z\d#$@!.\-]{8,}$/
+          ),
         ],
       ],
-      repeatPassword: ['', [Validators.required]],
+      repeatPassword: [
+        '',
+        [
+          Validators.required,
+          Validators.pattern(
+            /^(?=.*[0-9])(?=.*[#$@!.\-])[A-Za-z\d#$@!.\-]{8,}$/
+          ),
+        ],
+      ],
       phoneNumber: [
         '',
         [Validators.required, Validators.pattern(/^01[0125][0-9]{8}$/)],
@@ -108,7 +122,25 @@ export class RegisterComponent implements OnInit {
           console.log(response);
           if (response.isSuccess) {
             this.isLoading = false;
-            this.router.navigateByUrl('/login');
+            this.email = registerForm.value.email;
+            console.log(this.email);
+
+            Swal.fire({
+              text: 'هل تريد تأكيد تسجيل حسابك ؟',
+              showCancelButton: true,
+              confirmButtonText: 'تأكيد',
+              cancelButtonText: 'إلغاء',
+              customClass: {
+                confirmButton: 'btn-success',
+                cancelButton: 'btn-danger',
+              },
+            }).then((result) => {
+              if (result.isConfirmed) {
+                this.confirm(); // confirmation clicked
+              } else {
+                // canceled
+              }
+            });
           }
         },
         error: (error) => {
@@ -118,6 +150,28 @@ export class RegisterComponent implements OnInit {
         },
       });
     }
+  }
+
+  confirm() {
+    const toemail = this.email;
+
+    console.log(toemail);
+    this.identityService.confirmMail(toemail).subscribe({
+      next: (res) => {
+        console.log(res);
+        console.log(res.isSuccess);
+        if (res.isSuccess) {
+          window.open(
+            `https://mail.google.com/mail/u/0/#inbox=${toemail}`,
+            '_blank'
+          );
+          this.router.navigateByUrl('/login');
+        }
+      },
+      error: (err) => {
+        alert(`Error sending confirmation email: ${err}`);
+      },
+    });
   }
 
   onRoleSelected(role: string) {
