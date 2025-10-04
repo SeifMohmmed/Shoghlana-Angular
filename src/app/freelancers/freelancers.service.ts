@@ -20,7 +20,7 @@ export class FreelancersService {
 
   getById(id: number): Observable<ApiResponse<IFreelancer>> {
     return this.http.get<ApiResponse<IFreelancer>>(
-      this.baseURL + 'Freelancer' + id
+      this.baseURL + 'Freelancer/' + id
     );
   }
 }

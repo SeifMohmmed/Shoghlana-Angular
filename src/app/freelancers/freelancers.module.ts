@@ -8,10 +8,23 @@ import { FreelancerProfileComponent } from './freelancer-profile/freelancer-prof
 import { FreelancerWorkHistoryComponent } from './freelancer-work-history/freelancer-work-history.component';
 import { FreelancerEditProfileComponent } from './freelancer-edit-profile/freelancer-edit-profile.component';
 import { WorkComponent } from './work/work.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
-  declarations: [FreelancersComponent, FreelancerPortfolioComponent, FreelancerProfileComponent, FreelancerWorkHistoryComponent, FreelancerEditProfileComponent, WorkComponent],
-  imports: [CommonModule, FreelancersRoutingModule],
+  declarations: [
+    FreelancersComponent,
+    FreelancerPortfolioComponent,
+    FreelancerProfileComponent,
+    FreelancerWorkHistoryComponent,
+    FreelancerEditProfileComponent,
+    WorkComponent,
+  ],
+  imports: [
+    CommonModule,
+    FreelancersRoutingModule,
+    ReactiveFormsModule,
+    FormsModule,
+  ],
   exports: [FreelancersComponent],
 })
 export class FreelancersModule {}

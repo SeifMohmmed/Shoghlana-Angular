@@ -22,33 +22,38 @@ export class FreelancerProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.freelancerId = Number(this.activatedRoute.snapshot.paramMap.get('id'));
-
-    // if (this.freelancerId) {
-    //   this.loadFreelancerData();
-    // }
-    // console.log('Freelancer obj OnInit :');
-    // console.log(this.freelancer);
+    this.loadFreelancerData();
   }
 
-  loadFreelancerData(): void {
-    if (this.freelancer === null) {
+  private loadFreelancerData(): void {
+    if (this.freelancerId) {
       this.freelancerService.getById(this.freelancerId).subscribe({
         next: (res) => {
           console.log('Response: ', res);
-          if (res.isSuccess) {
+          if (res.isSuccess && res.data != null) {
             this.freelancer = res.data;
-            console.log(this.freelancer);
-            this.StringifiedPortfolio = JSON.stringify(
-              this.freelancer.portfolio
+
+            console.log('Freelancer', this.freelancer);
+
+            console.log(
+              'Image comming from service',
+              this.freelancer.personalImageBytes
             );
-            this.StringifiedWorkingHistory = JSON.stringify(
-              this.freelancer.workingHistory
+
+            if (res.data.personalImageBytes == null) {
+              const imageUrl = res.data.personalImageBytes
+                ? `data:image/png;base64,${res.data.personalImageBytes}`
+                : '../../../assets/Images/default-profile-picture-avatar-png-green.png';
+
+              console.log('imageUrl');
+              console.log(imageUrl);
+
+              this.freelancer.personalImageBytes = imageUrl;
+            }
+            console.log(
+              'Image comming from service',
+              this.freelancer.personalImageBytes
             );
-            // if (this.freelancer?.personalImageBytes) {
-            //   this.freelancer.personalImageBytes = this.convertToBase64(
-            //     this.freelancer.personalImageBytes
-            //   );
-            // }
           } else {
             console.error(`Failed to get the data, Status Code: ${res.status}`);
             console.error(`Server Message: ${res.message}`);

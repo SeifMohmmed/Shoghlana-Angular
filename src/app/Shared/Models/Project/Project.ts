@@ -8,8 +8,9 @@ export interface IProject {
   poster: string;
   skills: ISkill[];
   showSkills?: boolean;
-  //link: any;
-  //images: any[];
-  //timePublished: Time;
-  //freelancerId: number;
+  link: string;
+  images: string[];
+  skillIDs: number[];
+  timePublished: Time;
+  freelancerId: number;
 }
