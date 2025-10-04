@@ -39,6 +39,7 @@ export class ClientProfileComponent implements OnInit, AfterViewInit {
           console.log(this.client);
           console.log(this.client.country);
           this.clientLevel = Math.ceil(this.client.completedJobsCount / 10);
+          console.log(this.client.image);
         }
       },
       error: (err) => {

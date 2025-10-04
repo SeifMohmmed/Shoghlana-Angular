@@ -15,14 +15,41 @@ export class ProjectService {
   constructor(private http: HttpClient) {}
 
   getAll(): Observable<ApiResponse<IClientJob>> {
-    return this.http.get<ApiResponse<IClientJob>>(this.baseURL + 'Job');
+    return this.http.get<ApiResponse<any>>(this.baseURL + 'project');
   }
 
-  getById(id: number): Observable<ApiResponse<IClientJob>> {
-    let searchString = new HttpParams();
-    // searchString= searchString.append("projId",id)
-    // searchString= searchString.append("limit",5)
-    // return this.httpclient.get<any>(`${environment.baseUrl}/Job${id}`,{params:searchString})
-    return this.http.get<ApiResponse<IClientJob>>(this.baseURL + 'Job/' + id);
+  getById(id: number): Observable<ApiResponse<any>> {
+    return this.http.get<ApiResponse<any>>(this.baseURL + 'project/' + id);
+  }
+
+  getByFreelancerId(id: number) {
+    console.log(id);
+    return this.http.get(this.baseURL + 'project/freelancer/' + id);
+  }
+
+  addProject(
+    freelancerId: number,
+    projectData: FormData
+  ): Observable<ApiResponse<any>> {
+    return this.http.post<ApiResponse<any>>(
+      this.baseURL + 'project/' + freelancerId,
+      projectData
+    );
+  }
+
+  updateProject(
+    freelancerId: number,
+    projectData: FormData
+  ): Observable<ApiResponse<any>> {
+    return this.http.put<ApiResponse<any>>(
+      this.baseURL + 'project/' + freelancerId,
+      projectData
+    );
+  }
+
+  deleteProject(projectId: number): Observable<ApiResponse<any>> {
+    return this.http.delete<ApiResponse<any>>(
+      this.baseURL + 'project/' + projectId
+    );
   }
 }
