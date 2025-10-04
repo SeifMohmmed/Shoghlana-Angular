@@ -92,10 +92,20 @@ export class RegisterComponent implements OnInit {
         '',
         [
           Validators.required,
-          Validators.pattern(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/),
+          Validators.pattern(
+            /^(?=.*[0-9])(?=.*[#$@!.\-])[A-Za-z\d#$@!.\-]{8,}$/
+          ),
         ],
       ],
-      repeatPassword: ['', [Validators.required]],
+      repeatPassword: [
+        '',
+        [
+          Validators.required,
+          Validators.pattern(
+            /^(?=.*[0-9])(?=.*[#$@!.\-])[A-Za-z\d#$@!.\-]{8,}$/
+          ),
+        ],
+      ],
       phoneNumber: [
         '',
         [Validators.required, Validators.pattern(/^01[0125][0-9]{8}$/)],

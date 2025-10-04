@@ -1,12 +1,15 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { environment } from '../../environments/environment.development';
 import { ApiResponse } from '../Shared/Models/Response/ApiResponse';
-import { catchError, map, Observable, throwError } from 'rxjs';
+import { BehaviorSubject, catchError, map, Observable, throwError } from 'rxjs';
 import { IRegisterRequest } from '../Shared/Models/RegisterRequest/IRegisterRequest';
 import { ILoginRequest } from '../Shared/Models/LoginRequest/ILoginRequest';
 import { UserRoleService } from './user-role.service';
 import { GoogleAuthData } from '../Shared/Models/GoogleAuth/GoogleAuthData';
+import { Router } from '@angular/router';
+import { jwtDecode } from 'jwt-decode';
+import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
   providedIn: 'root',
@@ -14,14 +17,38 @@ import { GoogleAuthData } from '../Shared/Models/GoogleAuth/GoogleAuthData';
 export class IdentityService {
   baseURL = environment.baseURL;
   private email: string = '';
+  userData = new BehaviorSubject(null);
 
   constructor(
     private http: HttpClient,
-    private userRoleService: UserRoleService
-  ) {}
+    private userRoleService: UserRoleService,
+    private router: Router,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {
+    // ✅ Only access localStorage in the browser
+    if (isPlatformBrowser(this.platformId)) {
+      const token = localStorage.getItem('token');
+      if (token !== null) {
+        this.decodeUserData();
+      }
+    }
+  }
 
   setEmail(email: string) {
     this.email = email;
+  }
+
+  decodeUserData() {
+    if (isPlatformBrowser(this.platformId)) {
+      const encodedToken = localStorage.getItem('token');
+      if (encodedToken) {
+        const decodedToken: any = jwtDecode(encodedToken);
+        console.log(decodedToken);
+        this.userData.next(decodedToken);
+      } else {
+        console.error('Token not found in localStorage');
+      }
+    }
   }
 
   getEmail(): string {
@@ -42,6 +69,15 @@ export class IdentityService {
     );
   }
 
+  logOut() {
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.removeItem('token');
+      localStorage.removeItem('refreshToken');
+    }
+    this.userData.next(null);
+    this.router.navigateByUrl('/Account/login');
+  }
+
   googleAuthentication(
     googleAuthData: GoogleAuthData
   ): Observable<ApiResponse<GoogleAuthData>> {
@@ -60,7 +96,10 @@ export class IdentityService {
   }
 
   refreshToken(): Observable<ApiResponse<any>> {
-    const refreshToken = localStorage.getItem('refreshToken');
+    let refreshToken: string | null = null;
+    if (isPlatformBrowser(this.platformId)) {
+      refreshToken = localStorage.getItem('refreshToken');
+    }
 
     if (!refreshToken) {
       throw new Error('No refresh token available');
@@ -85,11 +124,15 @@ export class IdentityService {
   }
 
   storeTokens(accessToken: string, refreshToken: string) {
-    localStorage.setItem('token', accessToken);
-    localStorage.setItem('refreshToken', refreshToken);
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.setItem('token', accessToken);
+      localStorage.setItem('refreshToken', refreshToken);
+    }
   }
-
   getToken(): string {
-    return localStorage.getItem('token') || '';
+    if (isPlatformBrowser(this.platformId)) {
+      return localStorage.getItem('token') || '';
+    }
+    return '';
   }
 }

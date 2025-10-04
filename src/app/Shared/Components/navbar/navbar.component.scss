@@ -8,12 +8,18 @@
   color:white;
 
 }
+
 .logo{
   width: 100%;
 }
 .navbar-nav .nav-item {
   margin: 0 10px;
 
+}
+
+.navbar-nav
+{
+  cursor:pointer;
 }
 
 .navbar-nav .nav-link {
