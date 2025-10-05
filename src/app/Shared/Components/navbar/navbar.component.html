@@ -35,6 +35,19 @@
         <li *ngIf="!isLogged" class="nav-item">
           <a class="nav-link" routerLink="/Account/register">انشاء حساب</a>
         </li>
+        <li *ngIf="isLogged" class="nav-item active">
+          <a class="nav-link" routerLink="/live/joinRoom">جوين روم</a>
+        </li>
+        <div class="navbar">
+          <button class="dropdown-button" (click)="toggleDropdown()">
+            <i class="fa fa-regular fa-comment"></i>
+          </button>
+          <div class="dropdown-container" *ngIf="isOpen">
+            <div class="dropdown-content">
+              <p *ngIf="messages.length === 0">No new Messages</p>
+            </div>
+          </div>
+        </div>
         <li *ngIf="isLogged" class="nav-item">
           <a class="nav-link" routerLink="/client/:id">الملف الشخصى</a>
         </li>
