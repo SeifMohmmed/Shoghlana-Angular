@@ -1,3 +1,5 @@
+import { JobStatus } from '../../Enums/JobStatus/JobStatus';
+
 export interface IClientJob {
   id: number;
   title: string;

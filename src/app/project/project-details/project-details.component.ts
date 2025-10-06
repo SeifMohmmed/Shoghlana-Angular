@@ -7,6 +7,7 @@ import { IProposal } from '../../Shared/Models/Proposal/Proposal';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ProposalService } from '../../offers/proposal.service';
 import Swal from 'sweetalert2';
+import { JobStatus } from '../../Shared/Enums/JobStatus/JobStatus';
 
 @Component({
   selector: 'app-project-details',
@@ -19,6 +20,7 @@ export class ProjectDetailsComponent implements OnInit {
   clientJob: IClientJob | undefined;
   proposal: IProposal;
   proposalForm: FormGroup;
+  jobStatus = JobStatus;
 
   constructor(
     private activatedRoute: ActivatedRoute,

@@ -15,6 +15,7 @@ export class ClientProfileComponent implements OnInit, AfterViewInit {
   client: IClient;
   jobStatus = JobStatus;
   clientLevel: number;
+  emptyClientDescription: boolean = true;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -28,7 +29,7 @@ export class ClientProfileComponent implements OnInit, AfterViewInit {
 
     this.clientId = Number(this.activatedRoute.snapshot.paramMap.get('id'));
 
-    console.log(this.clientId);
+    // console.log(this.clientId);
 
     this.clientService.getById(this.clientId).subscribe({
       next: (res) => {
@@ -40,6 +41,13 @@ export class ClientProfileComponent implements OnInit, AfterViewInit {
           console.log(this.client.country);
           this.clientLevel = Math.ceil(this.client.completedJobsCount / 10);
           console.log(this.client.image);
+
+          if (this.client.description) {
+            this.emptyClientDescription = false;
+          }
+          if (this.clientId) {
+            console.log('Client Id : ' + this.clientId);
+          }
         }
       },
       error: (err) => {

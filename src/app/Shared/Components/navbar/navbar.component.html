@@ -49,7 +49,9 @@
           </div>
         </div>
         <li *ngIf="isLogged" class="nav-item">
-          <a class="nav-link" routerLink="/client/:id">الملف الشخصى</a>
+          <a class="nav-link" [routerLink]="['/client', clientId]"
+            >الملف الشخصى</a
+          >
         </li>
         <li *ngIf="isLogged" class="nav-item">
           <a class="nav-link" routerLink="/project">مشروع</a>
