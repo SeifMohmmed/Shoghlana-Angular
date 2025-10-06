@@ -1,4 +1,10 @@
-import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
 import { ICategory } from '../../Shared/Models/Category/ICategory';
 import { IClientJob } from '../../Shared/Models/Client/IClient-Job';
 import { Router } from '@angular/router';
@@ -9,6 +15,7 @@ import { DatePipe } from '@angular/common';
 import { IJob } from '../../Shared/Models/Job/IJob';
 import { IPaginatedJobsRequestBody } from '../../Shared/Models/PaginatedJobs/PaginatedJobsRequestBody';
 import { JobService } from '../../job/job.service';
+import { SearchStatus } from '../../Shared/Enums/SearchStatus/SearchStatus';
 
 @Component({
   selector: 'app-project',
@@ -31,9 +38,13 @@ export class ProjectComponent implements OnInit {
   pageSize = 5;
   totalItems = 0;
   minBudget: number = 0;
-  maxBudget: number = 0;
+  maxBudget: number = 10000;
   clientId: number = 0;
   freelancerId: number = 0;
+  HasManyProposals: boolean = false;
+  IsNew: boolean = true;
+  searchResultJobsArr: IJob[] = [];
+  searchStatus: SearchStatus = SearchStatus.Ignored;
   noJobsAvailable: boolean = false;
   jobsStatus: JobStatus = JobStatus.Active;
   requestBody: IPaginatedJobsRequestBody = {
@@ -45,8 +56,8 @@ export class ProjectComponent implements OnInit {
     private jobService: JobService,
     private projectService: ProjectService,
     private datePipe: DatePipe,
-    private clientJobService: ClientJobService,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -61,6 +72,8 @@ export class ProjectComponent implements OnInit {
         this.maxBudget,
         this.clientId,
         this.freelancerId,
+        this.HasManyProposals,
+        this.IsNew,
         this.currentPage,
         this.pageSize,
         this.jobsStatus,
@@ -101,6 +114,18 @@ export class ProjectComponent implements OnInit {
     this.fetchPaginatedJobs();
   }
 
+  selectNewOption(isNew: boolean): void {
+    this.IsNew = isNew;
+    this.fetchPaginatedJobs();
+    this.cdr.detectChanges();
+  }
+
+  selectProposalOption(hasManyProposals: boolean): void {
+    this.HasManyProposals = hasManyProposals;
+    this.fetchPaginatedJobs();
+    this.cdr.detectChanges();
+  }
+
   onCategorySelect(categoryId: number) {
     this.selectedCategoryId = categoryId;
     this.currentPage = 1; // returning it to first page in the new filteration
@@ -112,8 +137,16 @@ export class ProjectComponent implements OnInit {
     return Math.ceil(this.totalItems / this.pageSize);
   }
 
-  filterProjects(event: [ICategory[], number, number]): void {
-    const [selectedCategories, selectedMinBudget, selectedMaxBudget] = event;
+  filterProjects(
+    event: [ICategory[], number, number, IJob[], SearchStatus]
+  ): void {
+    const [
+      selectedCategories,
+      selectedMinBudget,
+      selectedMaxBudget,
+      searchResultJobsArr,
+      searchStatus,
+    ] = event;
 
     this.selectedCategories = selectedCategories;
     this.selectedCategoriesIDs = selectedCategories.map((c) => c.id);
@@ -121,8 +154,31 @@ export class ProjectComponent implements OnInit {
     this.minBudget = selectedMinBudget;
     this.maxBudget = selectedMaxBudget;
     this.currentPage = 1; // always return to the first page if a new filteraion is applied
+    this.searchResultJobsArr = searchResultJobsArr;
+    this.searchStatus = searchStatus;
 
-    this.fetchPaginatedJobs();
+    if (searchStatus == SearchStatus.Ignored) {
+      console.log('Parent : Search Ignored');
+      this.fetchPaginatedJobs();
+    } else if (searchStatus == SearchStatus.Found) {
+      console.log('Parent : Search Found');
+
+      this.filteredJobs = searchResultJobsArr;
+
+      this.totalItems = searchResultJobsArr.length;
+
+      this.pageSize = this.totalItems; // here because I dont want to use pagination (the API doesn't implement pagination at search for now)
+
+      this.filteredJobs.forEach((job) => {
+        job.postTime =
+          this.datePipe.transform(job.postTime, 'medium') || 'Invalid Date';
+      });
+    } // not found
+    else {
+      console.log('Parent : Search Not found');
+
+      this.filteredJobs = [];
+    }
   }
 
   navigateToDetails(id: number): void {
