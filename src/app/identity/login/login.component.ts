@@ -48,6 +48,7 @@ export class LoginComponent implements OnInit {
           if (response.isSuccess) {
             this.isLoading = false;
             localStorage.setItem('token', response.token);
+            localStorage.setItem('Id', response.data.id);
             this.identityService.decodeUserData();
             this.isLoading = false;
             this.router.navigateByUrl('/');

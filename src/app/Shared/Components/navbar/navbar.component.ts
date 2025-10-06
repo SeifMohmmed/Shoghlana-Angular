@@ -11,6 +11,7 @@ export class NavbarComponent implements OnInit {
   isLogged: boolean = false;
   isOpen: boolean = false;
   messages: any;
+  clientId: number;
 
   constructor(
     private identityService: IdentityService,
@@ -29,6 +30,7 @@ export class NavbarComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.clientId = Number(localStorage.getItem('Id'));
     this.chatService.messages$.subscribe((res) => {
       this.messages = res;
       console.log(this.messages);

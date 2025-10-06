@@ -115,6 +115,7 @@
             <div class="block">
               <div class="has-padding pb-0">
                 <p
+                  [ngClass]="{ 'text-danger': emptyClientDescription }"
                   class="desc-font mb-20"
                   style="line-height: 30px; font-size: 16px; direction: rtl"
                 >
@@ -313,13 +314,25 @@
                                   }}</span>
                                 </li>
                               </div>
-                              <!-- <span class="mx-4 offset-1 col-3" [ngClass]="{
-                                                            'text-success' : job.status === JobStatus.completed,
-                                                            'text-danger' : job.status === JobStatus.Closed,
-                                                            'text-primary' : job.status === JobStatus.Active
-                                                            }">
-                                                            {{job.status === JobStatus.completed? 'مكتمل': job.status === JobStatus.Closed? 'مغلق' : 'قيد التنفيذ' }}
-                                                        </span>  -->
+                              <!-- <span
+                                class="mx-4 offset-1 col-3"
+                                [ngClass]="{
+                                  'text-success':
+                                    job.status === jobStatus.Completed,
+                                  'text-danger':
+                                    job.status === jobStatus.Closed,
+                                  'text-primary':
+                                    job.status === jobStatus.Active
+                                }"
+                              >
+                                {{
+                                  job.status === jobStatus.Completed
+                                    ? "مكتمل"
+                                    : job.status === jobStatus.Closed
+                                    ? "مغلق"
+                                    : "قيد التنفيذ"
+                                }}
+                              </span> -->
                             </div>
                           </td>
                         </tr>
