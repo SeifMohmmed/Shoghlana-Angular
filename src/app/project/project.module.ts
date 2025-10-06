@@ -7,6 +7,7 @@ import { ProjectSideBarComponent } from './project-side-bar/project-side-bar.com
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ProjectDetailsComponent } from './project-details/project-details.component';
 import { AddprojectComponent } from './addproject/addproject.component';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { AddprojectComponent } from './addproject/addproject.component';
     ProjectRoutingModule,
     FormsModule,
     ReactiveFormsModule,
+    NgSelectModule,
   ],
 })
 export class ProjectModule {}

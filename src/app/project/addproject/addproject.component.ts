@@ -3,7 +3,8 @@ import { AddProjectService } from '../add-project.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IAddProject } from '../../Shared/Models/Project/IAddProject';
 import Swal from 'sweetalert2';
-import { title } from 'process';
+import { SkillsService } from '../../Skills/skills.service';
+import { ISkill } from '../../Shared/Models/Skill/Skill';
 
 @Component({
   selector: 'app-addproject',
@@ -13,13 +14,25 @@ import { title } from 'process';
 export class AddprojectComponent implements OnInit {
   newProject: IAddProject = {} as IAddProject;
   projectForm: FormGroup;
+  skillsList: ISkill[] = [];
 
   constructor(
     private addprojectService: AddProjectService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private skillService: SkillsService
   ) {}
 
   ngOnInit(): void {
+    this.skillService.getAll().subscribe({
+      next: (res) => {
+        this.skillsList = res.data;
+        console.log(this.skillsList);
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
+
     this.formValidator();
   }
 

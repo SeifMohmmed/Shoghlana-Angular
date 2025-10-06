@@ -23,6 +23,8 @@ export class JobService {
     maxBudget: number = 0,
     clientId: number = 0,
     freelancerId: number = 0,
+    hasManyProposals: boolean = false,
+    IsNew: boolean = true,
     page: number = 1,
     pageSize: number = 5,
     status: JobStatus = JobStatus.Active,
@@ -36,6 +38,8 @@ export class JobService {
       .set('MaxBudget', (maxBudget ?? 0).toString())
       .set('ClientId', (clientId ?? 0).toString())
       .set('FreelancerId', (freelancerId ?? 0).toString())
+      .set('HasManyProposals', (hasManyProposals ?? 0).toString())
+      .set('IsNew', (IsNew ?? 0).toString())
       .set('page', (page ?? 1).toString())
       .set('pageSize', (pageSize ?? 5).toString())
       .set('status', (status ?? 5).toString());
@@ -87,5 +91,12 @@ export class JobService {
 
   editJob(jobId: number, job: any): Observable<ApiResponse<IJob>> {
     return this.http.put<ApiResponse<IJob>>(this.baseURL + 'Job' + jobId, job);
+  }
+
+  searchByJobTitle(keyword: string): Observable<ApiResponse<any>> {
+    let params = new HttpParams().set('Keyword', keyword);
+    return this.http.get<ApiResponse<any>>(this.baseURL + 'Job/Search', {
+      params,
+    });
   }
 }

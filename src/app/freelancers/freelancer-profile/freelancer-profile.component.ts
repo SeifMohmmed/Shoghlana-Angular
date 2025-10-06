@@ -13,6 +13,7 @@ export class FreelancerProfileComponent implements OnInit {
   freelancerId: number;
   StringifiedPortfolio: any;
   StringifiedWorkingHistory: any;
+  editMode: boolean = false;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -23,6 +24,22 @@ export class FreelancerProfileComponent implements OnInit {
   ngOnInit(): void {
     this.freelancerId = Number(this.activatedRoute.snapshot.paramMap.get('id'));
     this.loadFreelancerData();
+  }
+
+  updateOverview(): void {
+    // this.freelancerService.updateFreelancer(this.freelancer).subscribe({
+    //   next: (res) => {
+    //     if (res.isSuccess) {
+    //       this.editMode = false;
+    //     } else {
+    //       console.error(`Failed to update the overview, Status Code: ${res.Status}`);
+    //       console.error(`Server Message: ${res.Message}`);
+    //     }
+    //   },
+    //   error: (err) => {
+    //     console.error(err);
+    //   }
+    // });
   }
 
   private loadFreelancerData(): void {
