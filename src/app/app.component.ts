@@ -1,5 +1,6 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { SignalRService } from './Shared/Services/signal-r.service';
+import { DarkModeService } from './Shared/Services/dark-mode.service';
 
 @Component({
   selector: 'app-root',
@@ -9,6 +10,7 @@ import { SignalRService } from './Shared/Services/signal-r.service';
 export class AppComponent implements OnInit, OnDestroy {
   title = 'Shoghlana';
   notifications: any[] = [];
+  darkModeService: DarkModeService = inject(DarkModeService);
 
   constructor(private signalRService: SignalRService) {}
 

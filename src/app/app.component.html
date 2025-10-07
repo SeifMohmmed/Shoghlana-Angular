@@ -1,6 +1,11 @@
-<app-navbar></app-navbar>
-<router-outlet></router-outlet>
-<app-footer></app-footer>
+<div
+  class="min-h-screen min-w-full bg-state-200 dark:bg-state-700"
+  [ngClass]="darkModeService.darkModeSignal()"
+>
+  <app-navbar></app-navbar>
+  <router-outlet></router-outlet>
+  <app-footer></app-footer>
+</div>
 <!-- <div>
   <h1>{{ title }}</h1>
   <ul>

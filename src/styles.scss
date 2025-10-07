@@ -1,1 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
+@import './tailwind.css';
+
+html {
+  transition: color 0.2s ease, background-color 0.2s ease;
+}

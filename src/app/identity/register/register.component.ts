@@ -9,9 +9,8 @@ import { IdentityService } from '../identity.service';
 import { Router } from '@angular/router';
 import { GoogleAuthData } from '../../Shared/Models/GoogleAuth/GoogleAuthData';
 import { UserRoleService } from '../user-role.service';
-import { SocialAuthService } from 'angularx-social-login';
+import { SocialAuthService } from '@abacritt/angularx-social-login';
 import Swal from 'sweetalert2';
-import { text } from 'stream/consumers';
 
 @Component({
   selector: 'app-register',
