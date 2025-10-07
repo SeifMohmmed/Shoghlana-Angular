@@ -1,6 +1,7 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, inject, OnInit } from '@angular/core';
 import { IdentityService } from '../../../identity/identity.service';
 import { ChatService } from '../../Services/chat.service';
+import { DarkModeService } from '../../Services/dark-mode.service';
 
 @Component({
   selector: 'app-navbar',
@@ -12,6 +13,7 @@ export class NavbarComponent implements OnInit {
   isOpen: boolean = false;
   messages: any;
   clientId: number;
+  darkModeService: DarkModeService = inject(DarkModeService);
 
   constructor(
     private identityService: IdentityService,
@@ -47,6 +49,10 @@ export class NavbarComponent implements OnInit {
 
   toggleDropdown() {
     this.isOpen = !this.isOpen;
+  }
+
+  toggleDarkMode() {
+    this.darkModeService.updateDarkMode();
   }
 
   logout() {
