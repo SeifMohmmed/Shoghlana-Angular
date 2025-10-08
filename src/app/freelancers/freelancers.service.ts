@@ -23,4 +23,11 @@ export class FreelancersService {
       this.baseURL + 'Freelancer/' + id
     );
   }
+
+  update(id: number, freelancer: any): Observable<ApiResponse<any>> {
+    return this.http.put<ApiResponse<any>>(
+      this.baseURL + 'Freelancer/' + id,
+      freelancer
+    );
+  }
 }

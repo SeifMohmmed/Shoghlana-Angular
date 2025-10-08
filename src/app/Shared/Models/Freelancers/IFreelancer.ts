@@ -7,8 +7,9 @@ export interface IFreelancer {
   name: string;
   title: string;
   skills: ISkill[];
+  skillsIds: number[];
   address: string;
-  personalImageBytes: string | null;
+  personalImageBytes: string | File;
   overView: string;
   portfolio: IPortfolio[];
   workingHistory: IWorkingHistory[];

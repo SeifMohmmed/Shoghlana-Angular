@@ -10,26 +10,77 @@
           </div>
           <div class="has-padding">
             <div class="user-info-column">
-              <div class="img marked">
+              <div class="img marked position-relative">
                 <img
-                  class=""
-                  src="data:image/png;base64,{{ client.image }}"
+                  [src]="
+                    client.image
+                      ? 'data:image/png;base64,' + client.image
+                      : '../../../assets/Images/default-profile-picture-avatar-png-green.png'
+                  "
                   alt=""
+                  class="img-fluid rounded-circle"
                 />
-                <!-- <svg width="82" height="82">
-                                    <circle r="39" cx="41" cy="41" style="stroke-dashoffset: calc(250 - (250 * 67) / 100);"></circle>
-                                </svg> -->
+                <i
+                  *ngIf="vistitedClientId === loggedInClientId"
+                  class="fa-solid fa-upload text-primary position-absoulute upload-icon"
+                  (click)="triggerFileInput()"
+                ></i>
+                <input
+                  type="file"
+                  accept=".png,.jpg,.jpeg"
+                  #fileInput
+                  (change)="selectedImgChanged($event)"
+                  class="d-none"
+                />
               </div>
-              <p class="name" *ngIf="client">
-                <span style="font-weight: bold; font-size: larger">{{
-                  client.name
-                }}</span>
-              </p>
+              <span *ngIf="imageError" class="text-danger w-100">
+                {{ imageError }}
+              </span>
+              <div class="d-flex align-items-center">
+                <div class="flex-grow-1">
+                  <p
+                    class="name"
+                    *ngIf="!isEditingName"
+                    (click)="toggleEditName()"
+                    style="cursor: pointer"
+                  >
+                    <span style="font-weight: bold; font-size: larger">{{
+                      client.name
+                    }}</span>
+                  </p>
+                  <input
+                    *ngIf="isEditingName"
+                    [(ngModel)]="tempName"
+                    class="form-control"
+                    (blur)="saveName()"
+                    style="font-weight: bold; font-size: larger"
+                  />
+                  <div *ngIf="nameError" class="text-danger">
+                    {{ nameError }}
+                  </div>
+                </div>
+                <span
+                  *ngIf="vistitedClientId === loggedInClientId"
+                  class="d-inline-block ms-2"
+                >
+                  <i
+                    class="fa-solid fa-pen ms-1 text-primary"
+                    (click)="toggleEditName()"
+                    style="cursor: pointer"
+                  ></i>
+                </span>
+              </div>
+
               <div class="">
                 <div class="dashboard-sidebar-tag">
-                  <span class="theme-color" style="font-weight: bold">{{
-                    client.country
-                  }}</span>
+                  <span
+                    class="theme-color"
+                    [ngClass]="{ 'text-danger': emptyClientCountry }"
+                    style="font-weight: bold"
+                    >{{
+                      client.country ? client.country : "لم يحدد الجنسية"
+                    }}</span
+                  >
                 </div>
                 <p class="info-content">
                   <i class="fa fa-layer-group text-primary p-1"></i>
@@ -104,18 +155,50 @@
           class="nav nav-tabs block-tabs mb-3 hide-scrollbar-allow-scroll"
           style="direction: rtl"
         >
-          <li class="nav-item text-primary">
-            <!-- <a href="https://kafiil.com/u/lisa_noman" class="active"> -->
-            <i class="fa fa-user"></i> نبذة عني
-            <!-- </a> -->
+          <li
+            class="nav-item text-primary d-flex justify-content-between align-items-center"
+            style="width: 100%"
+          >
+            <span class="d-inline-block">
+              <i class="fa fa-user"></i> نبذة عني
+            </span>
+            <span
+              class="d-incline-block"
+              *ngIf="vistitedClientId === loggedInClientId"
+            >
+              <button
+                class="btn btn-outline-light bg-primary text-white ms-3"
+                (click)="toggleEdit()"
+              >
+                تعديل <i class="fa-solid fa-pen ms-1"></i>
+              </button>
+            </span>
           </li>
         </ul>
         <div class="row">
           <div class="col-12">
             <div class="block">
               <div class="has-padding pb-0">
+                <div *ngIf="isEditing">
+                  <textarea
+                    [(ngModel)]="tempDescription"
+                    class="form-control"
+                    style="direction: rtl; font-size: 16px; line-height: 30px"
+                    rows="4"
+                  ></textarea>
+                  <button
+                    class="btn btn-primary m-2"
+                    (click)="saveDescription()"
+                  >
+                    حفظ
+                  </button>
+                  <button class="btn btn-primary m-2" (click)="cancelEdit()">
+                    الغاء
+                  </button>
+                </div>
                 <p
-                  [ngClass]="{ 'text-danger': emptyClientDescription }"
+                  *ngIf="!isEditing"
+                  [ngClass]="{ 'text-danger': !client.description }"
                   class="desc-font mb-20"
                   style="line-height: 30px; font-size: 16px; direction: rtl"
                 >
