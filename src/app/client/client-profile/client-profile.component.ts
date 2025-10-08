@@ -1,4 +1,10 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { IClient } from '../../Shared/Models/Client/Client';
 import { JobStatus } from '../../Shared/Enums/JobStatus/JobStatus';
 import { ActivatedRoute } from '@angular/router';
@@ -16,6 +22,18 @@ export class ClientProfileComponent implements OnInit, AfterViewInit {
   jobStatus = JobStatus;
   clientLevel: number;
   emptyClientDescription: boolean = true;
+  emptyClientCountry: boolean = true;
+  vistitedClientId: number;
+  loggedInClientId: number;
+  updatedClient: IClient;
+  @ViewChild('fileInput') fileInput: ElementRef;
+  imageError: string | undefined;
+  isEditing = false;
+  tempDescription: string;
+  isEditingName = false;
+  tempName: string;
+  emptyClientName: boolean = true;
+  nameError: string = '';
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -27,26 +45,45 @@ export class ClientProfileComponent implements OnInit, AfterViewInit {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     //Add 'implements OnInit' to the class.
 
-    this.clientId = Number(this.activatedRoute.snapshot.paramMap.get('id'));
+    this.vistitedClientId = Number(
+      this.activatedRoute.snapshot.paramMap.get('id')
+    );
+    this.loggedInClientId = Number(
+      this.activatedRoute.snapshot.paramMap.get('id')
+    );
+    console.log('Id From Local Stroage: ', this.loggedInClientId);
+
+    this.updatedClient.id = this.vistitedClientId;
+
+    console.log('LoggedIn Client Id ' + this.loggedInClientId);
+    console.log('Visited Client Id ' + this.vistitedClientId);
 
     // console.log(this.clientId);
 
-    this.clientService.getById(this.clientId).subscribe({
+    this.clientService.getById(this.vistitedClientId).subscribe({
       next: (res) => {
         console.log(res.data);
         if (res.isSuccess) {
           this.client = res.data;
           console.log(res);
           console.log(this.client);
+          console.log(this.client.image);
           console.log(this.client.country);
           this.clientLevel = Math.ceil(this.client.completedJobsCount / 10);
-          console.log(this.client.image);
+
+          this.updatedClient.name = this.client.name;
+          this.updatedClient.description = this.client.description;
+          this.updatedClient.country = this.client.country;
+          this.updatedClient.image = this.client.image;
 
           if (this.client.description) {
             this.emptyClientDescription = false;
           }
-          if (this.clientId) {
-            console.log('Client Id : ' + this.clientId);
+          if (this.vistitedClientId) {
+            console.log('Client Id : ' + this.vistitedClientId);
+          }
+          if (this.client.country) {
+            this.emptyClientCountry = false;
           }
         }
       },
@@ -83,5 +120,103 @@ export class ClientProfileComponent implements OnInit, AfterViewInit {
 
   formattedDateTime() {
     return this.datePipe.transform(this.client.registerationTime, 'mediumDate');
+  }
+
+  toggleEdit() {
+    this.isEditing = !this.isEditing;
+  }
+
+  saveDescription() {
+    this.isEditing = false;
+    this.emptyClientDescription = !this.client.description;
+    this.updatedClient.description = this.tempDescription;
+
+    this.clientService.update(this.updatedClient).subscribe({
+      next: (res) => {
+        console.log(res);
+        if (res.isSuccess) {
+          console.log(res);
+          this.client = res.data;
+        } else {
+          console.log(res);
+        }
+      },
+    });
+  }
+
+  cancelEdit() {
+    this.isEditing = false;
+  }
+
+  toggleEditName() {
+    this.isEditingName = !this.isEditingName;
+    this.nameError = '';
+  }
+
+  saveName() {
+    if (this.tempName.trim() === '') {
+      this.nameError = 'يجب ادخال الاسم';
+      return;
+    }
+    this.isEditingName = false;
+    this.updatedClient.name = this.tempName;
+    this.emptyClientName = !this.client.name;
+    this.clientService.update(this.updatedClient).subscribe({
+      next: (res) => {
+        console.log(res);
+        if (res.isSuccess) {
+          console.log(res);
+          this.client = res.data;
+        } else {
+          console.log(res);
+        }
+      },
+    });
+  }
+
+  cancelEditName() {
+    this.isEditingName = false;
+    this.nameError = '';
+  }
+
+  triggerFileInput() {
+    this.fileInput.nativeElement.click();
+  }
+
+  selectedImgChanged(event: any) {
+    const input = event.target as HTMLInputElement;
+    const img = event.target.files[0];
+    const allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
+    if (!allowedExtensions.exec(img.name)) {
+      this.imageError = '(Jpg , Png, Jpeg) يرجي استخدام ملف';
+      input.value = '';
+      return;
+    }
+
+    console.log(img);
+    this.updatedClient.image = img;
+    console.log('sent client : ', this.client);
+    this.clientService.update(this.updatedClient).subscribe({
+      next: (res) => {
+        console.log(res);
+        if (res.isSuccess) {
+          console.log(res);
+          this.client = res.data;
+          this.tempDescription = this.client.description;
+          console.log(this.client);
+          this.imageError = '';
+        } else {
+          console.log(res);
+          console.log(res.data.value.data);
+          this.client = res.data.value.data;
+          this.imageError = res.message;
+          //  alert(res.message)
+        }
+
+        //     this.ClientService.GetById(this.VisitedClientId).subscribe({
+        //       next : (res) => {this.Client = res.data}
+        //     })
+      },
+    });
   }
 }

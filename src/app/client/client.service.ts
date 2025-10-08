@@ -16,4 +16,24 @@ export class ClientService {
   getById(id: number): Observable<ApiResponse<IClient>> {
     return this.http.get<ApiResponse<IClient>>(this.baseURL + 'Client/' + id);
   }
+
+  update(updatedClient: IClient): Observable<ApiResponse<any>> {
+    const formData: FormData = new FormData();
+    formData.append('Id', updatedClient.id.toString());
+    formData.append('Image', updatedClient.image);
+    formData.append('Description', updatedClient.description);
+    formData.append('Country', updatedClient.country);
+    formData.append('Name', updatedClient.name);
+
+    return this.http.put<ApiResponse<any>>(this.baseURL + 'Client', formData);
+  }
+
+  updateOverView(Description: string, Id: number) {
+    const formData: FormData = new FormData();
+
+    formData.append('Id', Id.toString());
+    formData.append('Image', Description);
+
+    return this.http.put(this.baseURL + 'Client', formData);
+  }
 }
