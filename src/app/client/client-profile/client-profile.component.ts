@@ -18,14 +18,14 @@ import { ClientService } from '../client.service';
 })
 export class ClientProfileComponent implements OnInit, AfterViewInit {
   clientId: number;
-  client: IClient;
+  client: IClient = {} as IClient;
   jobStatus = JobStatus;
   clientLevel: number;
   emptyClientDescription: boolean = true;
   emptyClientCountry: boolean = true;
   vistitedClientId: number;
   loggedInClientId: number;
-  updatedClient: IClient;
+  updatedClient: IClient = {} as IClient;
   @ViewChild('fileInput') fileInput: ElementRef;
   imageError: string | undefined;
   isEditing = false;
@@ -218,5 +218,45 @@ export class ClientProfileComponent implements OnInit, AfterViewInit {
         //     })
       },
     });
+  }
+  SelectedImgChanged(event: any) {
+    const input = event.target as HTMLInputElement;
+    const img = event.target.files[0];
+
+    const allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
+    if (!allowedExtensions.exec(img.name)) {
+      this.imageError = '(Jpg , Png, Jpeg) يرجي استخدام ملف';
+      input.value = '';
+      return;
+    }
+    console.log(img);
+    this.updatedClient.image = img;
+    console.log('sent client : ', this.client);
+    this.clientService.update(this.updatedClient).subscribe({
+      next: (res) => {
+        console.log(res);
+        if (res.isSuccess) {
+          console.log(res);
+          this.client = res.data;
+          this.tempDescription = this.client.description;
+          console.log(this.client);
+          this.imageError = '';
+        } else {
+          console.log(res);
+          console.log(res.data.value.data);
+          this.client = res.data.value.data;
+          this.imageError = res.message;
+          //  alert(res.message)
+        }
+
+        //     this.ClientService.GetById(this.VisitedClientId).subscribe({
+        //       next : (res) => {this.Client = res.data}
+        //     })
+      },
+    });
+  }
+
+  TriggerFileInput() {
+    this.fileInput.nativeElement.click();
   }
 }

@@ -6,7 +6,7 @@ export interface IClientJob {
   minBudget: string;
   maxBudget: string;
   description: string;
-  status: string;
+  status: JobStatus;
   clientName: string;
   clientImg: string;
   catID: number;

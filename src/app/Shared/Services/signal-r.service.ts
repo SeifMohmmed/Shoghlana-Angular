@@ -6,19 +6,23 @@ import * as signalR from '@microsoft/signalr';
 })
 export class SignalRService {
   baseURL = 'https://localhost:7029/notificationHub';
+  private hubConnection: signalR.HubConnection;
 
   constructor() {
     this.hubConnection = new signalR.HubConnectionBuilder()
       .withUrl(this.baseURL, {
         accessTokenFactory: () => {
-          const token = localStorage.getItem('token');
-          return token ? token : '';
+          if (typeof window !== 'undefined' && localStorage) {
+            const token = localStorage.getItem('token');
+            return token ? token : '';
+          }
+          return '';
         },
       })
+      .withAutomaticReconnect()
+      .configureLogging(signalR.LogLevel.Information)
       .build();
   }
-
-  private hubConnection: signalR.HubConnection;
 
   startConnection(): void {
     this.hubConnection

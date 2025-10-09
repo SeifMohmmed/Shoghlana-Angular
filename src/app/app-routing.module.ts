@@ -8,16 +8,11 @@ const routes: Routes = [
   {
     path: '',
     component: HomeComponent,
+    // canActivate: [authGuard],
   },
 
   {
-    path: '',
-    component: HomeComponent,
-    canActivate: [authGuard],
-  },
-
-  {
-    path: 'Account',
+    path: 'account',
     loadChildren: () =>
       import('./identity/identity.module').then((m) => m.IdentityModule),
   },
@@ -37,30 +32,35 @@ const routes: Routes = [
 
   {
     path: 'project',
+    canActivate: [authGuard],
     loadChildren: () =>
       import('./project/project.module').then((m) => m.ProjectModule),
   },
 
   {
     path: 'client',
+    canActivate: [authGuard],
     loadChildren: () =>
       import('./client/client.module').then((m) => m.ClientModule),
   },
 
   {
     path: 'offers',
+    canActivate: [authGuard],
     loadChildren: () =>
       import('./offers/offers.module').then((m) => m.OffersModule),
   },
 
   {
     path: 'addservice',
+    canActivate: [authGuard],
     loadChildren: () =>
       import('./addservice/addservice.module').then((m) => m.AddserviceModule),
   },
 
   {
     path: 'live',
+    canActivate: [authGuard],
     loadChildren: () =>
       import('./signal-r/signal-r.module').then((m) => m.SignalRModule),
   },

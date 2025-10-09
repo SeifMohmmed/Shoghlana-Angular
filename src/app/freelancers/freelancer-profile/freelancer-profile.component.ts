@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FreelancersService } from '../freelancers.service';
 import { ISkill } from '../../Shared/Models/Skill/Skill';
 import { SkillsService } from '../../Skills/skills.service';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-freelancer-profile',
@@ -16,15 +17,17 @@ export class FreelancerProfileComponent implements OnInit {
   originalFreelancer: IFreelancer;
   editMode: boolean = false;
   allSkills: ISkill[] = [];
-  selectedSkills: number[] = [];
+  selectedSkillsIds: number[] = [];
   previewImage: string | ArrayBuffer | null = null;
+  skillInput: string;
   // StringifiedWorkingHistory: any;
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private freelancerService: FreelancersService,
     private skillService: SkillsService,
-    private router: Router
+    private router: Router,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -91,7 +94,7 @@ export class FreelancerProfileComponent implements OnInit {
     // Append other fields as needed
 
     // Append skillIDs as array of integers
-    this.selectedSkills.forEach((skillId) => {
+    this.selectedSkillsIds.forEach((skillId) => {
       formData.append('skillIDs', skillId.toString());
     });
 
@@ -100,7 +103,7 @@ export class FreelancerProfileComponent implements OnInit {
       next: (res) => {
         if (res.isSuccess) {
           this.freelancer = res.data;
-          this.editMode = false;
+          this.loadFreelancerData();
         } else {
           console.error(
             `Failed to update the profile, Status Code: ${res.status}`
@@ -123,17 +126,19 @@ export class FreelancerProfileComponent implements OnInit {
   onSkillChange(event: Event, skillId: number): void {
     const isChecked = (event.target as HTMLInputElement).checked;
     if (isChecked) {
-      this.selectedSkills.push(skillId);
+      this.selectedSkillsIds.push(skillId);
     } else {
-      this.selectedSkills = this.selectedSkills.filter((id) => id !== skillId);
+      this.selectedSkillsIds = this.selectedSkillsIds.filter(
+        (id) => id !== skillId
+      );
     }
   }
 
   isSkillSelected(skillId: number): boolean {
-    return this.selectedSkills.includes(skillId);
+    return this.selectedSkillsIds.includes(skillId);
   }
 
-  private loadFreelancerData(): void {
+  public loadFreelancerData(): void {
     if (this.freelancerId) {
       this.freelancerService.getById(this.freelancerId).subscribe({
         next: (res) => {
@@ -141,7 +146,7 @@ export class FreelancerProfileComponent implements OnInit {
           if (res.isSuccess && res.data != null) {
             this.freelancer = res.data;
             this.originalFreelancer = { ...res.data };
-            this.selectedSkills = this.freelancer.skills.map(
+            this.selectedSkillsIds = this.freelancer.skills.map(
               (skill) => skill.id
             );
             console.log('Freelancer', this.freelancer);
@@ -151,15 +156,17 @@ export class FreelancerProfileComponent implements OnInit {
               this.freelancer.personalImageBytes
             );
 
-            if (res.data.personalImageBytes == null) {
-              const imageUrl = res.data.personalImageBytes
-                ? `data:image/png;base64,${res.data.personalImageBytes}`
-                : '../../../assets/Images/default-profile-picture-avatar-png-green.png';
+            const isBase64Image = /^data:image\/(png|jpeg|jpg);base64,/.test(
+              res.data.personalImageBytes as string
+            );
 
-              console.log('imageUrl');
-              console.log(imageUrl);
-
-              this.freelancer.personalImageBytes = imageUrl;
+            if (res.data.personalImageBytes == null || isBase64Image) {
+              this.freelancer.personalImageBytes =
+                this.originalFreelancer.personalImageBytes =
+                  '../../../assets/Images/default-profile-picture-avatar-png-green.png';
+            } else {
+              this.freelancer.personalImageBytes = `data:image/png;base64,${res.data.personalImageBytes}`;
+              this.originalFreelancer.personalImageBytes = `data:image/png;base64,${res.data.personalImageBytes}`;
             }
             console.log(
               'Image comming from service',
@@ -181,20 +188,4 @@ export class FreelancerProfileComponent implements OnInit {
   private convertToBase64(bytes: any): string {
     return `data:image/png;base64,${bytes}`;
   }
-
-  // navigateToPortfolio() {
-  //   console.log(this.freelancer.portfolio);
-  //   this.router.navigate(
-  //     [`/freelancerprofile/${this.freelancer.id}/portfolio`],
-  //     { queryParams: { portfolio: this.originalFreelancer } }
-  //   );
-  // }
-
-  // navigateToWorkingHistory() {
-  //   console.log(this.freelancer.workingHistory);
-  //   this.router.navigate(
-  //     [`/freelancerprofile/${this.freelancer.id}/workhistory`],
-  //     { queryParams: { workingHistory: this.StringifiedWorkingHistory } }
-  //   );
-  // }
 }

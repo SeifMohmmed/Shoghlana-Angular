@@ -1,32 +1,18 @@
-import { inject, Injectable } from '@angular/core';
-import {
-  ActivatedRoute,
-  ActivatedRouteSnapshot,
-  CanActivateFn,
-  Router,
-  RouterStateSnapshot,
-} from '@angular/router';
+// auth.guard.ts
+import { inject } from '@angular/core';
+import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from './auth.service';
-import { Observable } from 'rxjs';
 
-@Injectable({
-  providedIn: 'root',
-})
-export class authGuard {
-  constructor(private authService: AuthService, private router: Router) {}
+export const authGuard: CanActivateFn = (route, state) => {
+  const authService = inject(AuthService);
+  const router = inject(Router);
 
-  canActivate(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-  ): Observable<boolean> | Promise<boolean> | boolean {
-    if (
-      typeof window !== 'undefined' &&
-      localStorage.getItem('token') !== null
-    ) {
-      return true;
-    } else {
-      this.router.navigateByUrl('/Account/login');
-      return false;
-    }
+  // Check for token
+  if (typeof window !== 'undefined' && localStorage.getItem('token')) {
+    return true;
   }
-}
+
+  // Redirect to login if not authenticated
+  router.navigateByUrl('/account/login');
+  return false;
+};
