@@ -11,7 +11,10 @@ export class FreelancersComponent implements OnInit {
   FreelancersArr: IFreelancer[] = [];
   constructor(private freelancerService: FreelancersService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.loadFreelancers();
+  }
+
   loadFreelancers() {
     this.freelancerService.getAll().subscribe({
       next: (res) => {

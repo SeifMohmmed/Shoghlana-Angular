@@ -6,6 +6,7 @@ import { RegisterComponent } from './register/register.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { LoginComponent } from './login/login.component';
 import { RoleSelectionPopupComponent } from './role-selection-popup/role-selection-popup.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [
@@ -13,7 +14,12 @@ import { RoleSelectionPopupComponent } from './role-selection-popup/role-selecti
     LoginComponent,
     RoleSelectionPopupComponent,
   ],
-  imports: [CommonModule, IdentityRoutingModule, ReactiveFormsModule],
+  imports: [
+    CommonModule,
+    IdentityRoutingModule,
+    ReactiveFormsModule,
+    TranslateModule,
+  ],
   exports: [RegisterComponent, LoginComponent],
 })
 export class IdentityModule {}

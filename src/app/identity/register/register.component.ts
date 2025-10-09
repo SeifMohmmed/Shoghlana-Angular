@@ -11,6 +11,7 @@ import { GoogleAuthData } from '../../Shared/Models/GoogleAuth/GoogleAuthData';
 import { UserRoleService } from '../user-role.service';
 import { SocialAuthService } from '@abacritt/angularx-social-login';
 import Swal from 'sweetalert2';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-register',
@@ -31,7 +32,8 @@ export class RegisterComponent implements OnInit {
     private identityService: IdentityService,
     private socialAuthService: SocialAuthService,
     private userRoleService: UserRoleService,
-    private router: Router
+    private router: Router,
+    private translateService: TranslateService
   ) {}
 
   ngOnInit(): void {
@@ -112,7 +114,12 @@ export class RegisterComponent implements OnInit {
         '',
         [Validators.required, Validators.pattern(/^01[0125][0-9]{8}$/)],
       ],
+      role: new FormControl(this.userRoleService.get()),
+      // phoneNumbers:new FormArray([new FormControl('')])
     });
+    const lang = localStorage.getItem('language') || 'en';
+    this.translateService.setDefaultLang(lang);
+    this.translateService.use(lang);
   }
 
   handleRegister(registerForm: FormGroup) {

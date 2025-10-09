@@ -12,7 +12,9 @@
                 <div class="d-flex flex-column text-end me-3">
                   <div class="d-flex">
                     <p class="status ms-1 p-1">
-                      {{ clientJob.status === "0" ? "مغلق" : "مفتوح" }}
+                      {{
+                        clientJob.status === jobStatus.All ? "مغلق" : "مفتوح"
+                      }}
                     </p>
                     <p class="title">{{ clientJob.title }}</p>
                   </div>

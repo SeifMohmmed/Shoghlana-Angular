@@ -1,7 +1,15 @@
-import { Component, HostListener, inject, OnInit } from '@angular/core';
+import {
+  Component,
+  HostListener,
+  Inject,
+  inject,
+  OnInit,
+  PLATFORM_ID,
+} from '@angular/core';
 import { IdentityService } from '../../../identity/identity.service';
 import { ChatService } from '../../Services/chat.service';
 import { DarkModeService } from '../../Services/dark-mode.service';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-navbar',
@@ -12,28 +20,29 @@ export class NavbarComponent implements OnInit {
   isLogged: boolean = false;
   isOpen: boolean = false;
   messages: any;
-  clientId: number;
+  clientId: number | null;
   darkModeService: DarkModeService = inject(DarkModeService);
 
   constructor(
     private identityService: IdentityService,
-    private chatService: ChatService
+    private chatService: ChatService,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {
     //using behavoir subject this code works with every change in dom
     identityService.userData.subscribe({
       next: () => {
-        if (identityService.userData.getValue() !== null) {
-          this.isLogged = true;
-        } else {
-          this.isLogged = false;
-        }
+        this.isLogged = identityService.userData.getValue() !== null;
       },
     });
   }
 
   ngOnInit(): void {
-    this.clientId = Number(localStorage.getItem('Id'));
-    console.log('id from navbar' + this.clientId);
+    // Only access localStorage in the browser
+    if (isPlatformBrowser(this.platformId)) {
+      const id = localStorage.getItem('Id');
+      this.clientId = id ? Number(id) : null;
+      console.log('Client Id from navbar' + this.clientId);
+    }
     this.chatService.messages$.subscribe((res) => {
       this.messages = res;
       console.log(this.messages);

@@ -9,6 +9,10 @@ import { FreelancerWorkHistoryComponent } from './freelancer-work-history/freela
 import { FreelancerEditProfileComponent } from './freelancer-edit-profile/freelancer-edit-profile.component';
 import { WorkComponent } from './work/work.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { SharedModule } from '../Shared/Components/shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -24,6 +28,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     FreelancersRoutingModule,
     ReactiveFormsModule,
     FormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatAutocompleteModule,
+    SharedModule,
   ],
   exports: [FreelancersComponent],
 })
