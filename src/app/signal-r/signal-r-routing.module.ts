@@ -4,6 +4,7 @@ import { JoinRoomComponent } from './join-room/join-room.component';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { ChatComponent } from './chat/chat.component';
 import { authGuard } from '../Guards/auth.guard';
+import { IndividualChatComponent } from './individual-chat/individual-chat.component';
 
 const routes: Routes = [
   {
@@ -19,6 +20,11 @@ const routes: Routes = [
   {
     path: 'chat',
     component: ChatComponent,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'individualChat',
+    component: IndividualChatComponent,
     canActivate: [authGuard],
   },
 ];

@@ -6,7 +6,7 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { ChatService } from '../../Shared/Services/chat.service';
+import { ChatService } from './chat.service';
 import { Router } from '@angular/router';
 
 @Component({

@@ -21,7 +21,6 @@ import { SocialLoginModule } from '@abacritt/angularx-social-login';
     NotFoundComponent,
     FooterComponent,
     NavbarComponent,
-    SocialLoginModule,
   ],
 })
 export class SharedModule {}

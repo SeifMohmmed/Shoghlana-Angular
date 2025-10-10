@@ -9,8 +9,9 @@ import { ProposalService } from '../../offers/proposal.service';
 import Swal from 'sweetalert2';
 import { JobStatus } from '../../Shared/Enums/JobStatus/JobStatus';
 import { FreelancersService } from '../../freelancers/freelancers.service';
-import { IndividualChatService } from '../../Shared/Services/individual-chat.service';
+import { IndividualChatService } from '../../signal-r/individual-chat/individual-chat.service';
 import { User } from '../../Shared/Models/User/User';
+import { Router } from 'express';
 
 @Component({
   selector: 'app-project-details',
@@ -30,6 +31,7 @@ export class ProjectDetailsComponent implements OnInit {
   freelancerDetails: any[] = [];
   freelancerName: any;
   apiErrorMessage: string[] = [];
+  openChat = false;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -37,6 +39,7 @@ export class ProjectDetailsComponent implements OnInit {
     private proposalService: ProposalService,
     private freelancerService: FreelancersService,
     private individualChatService: IndividualChatService,
+    private router: Router,
     private fb: FormBuilder,
     private location: Location,
     private datePipe: DatePipe
@@ -98,6 +101,7 @@ export class ProjectDetailsComponent implements OnInit {
         console.error('Error fetching proposal data', err);
       },
     });
+    this.individualChatService.myName = { name: 'Intial Name' };
   }
 
   formValidator() {
@@ -112,10 +116,14 @@ export class ProjectDetailsComponent implements OnInit {
 
   chat() {
     this.apiErrorMessage = [];
+    this.openChat = true;
     const user: User = { name: this.freelancerName };
     this.individualChatService.registerUser(user).subscribe({
       next: () => {
-        console.log('openChat');
+        //console.log('openChat');
+        this.individualChatService.myName = user;
+        console.log('myname', this.individualChatService.myName);
+        this.openChat = true;
       },
       error: (err) => {
         if (typeof err.error !== 'object') {
@@ -123,6 +131,10 @@ export class ProjectDetailsComponent implements OnInit {
         }
       },
     });
+  }
+
+  closeChat() {
+    this.openChat = false;
   }
 
   goBack() {

@@ -7,7 +7,7 @@ import {
   PLATFORM_ID,
 } from '@angular/core';
 import { IdentityService } from '../../../identity/identity.service';
-import { ChatService } from '../../Services/chat.service';
+import { ChatService } from '../../../signal-r/chat/chat.service';
 import { DarkModeService } from '../../Services/dark-mode.service';
 import { isPlatformBrowser } from '@angular/common';
 

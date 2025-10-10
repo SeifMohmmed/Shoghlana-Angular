@@ -63,6 +63,7 @@ export class ProjectComponent implements OnInit {
   ngOnInit(): void {
     this.fetchPaginatedJobs();
   }
+
   fetchPaginatedJobs() {
     this.noJobsAvailable = false;
 
@@ -114,6 +115,21 @@ export class ProjectComponent implements OnInit {
     this.fetchPaginatedJobs();
   }
 
+  resetFilters() {
+    // reintialize again because the search changer their values
+    this.currentPage = 1;
+    this.pageSize = 5;
+    this.minBudget = 0;
+    this.maxBudget = 0;
+    this.selectedCategoryId = 0;
+    this.currentPage = 1;
+    this.noJobsAvailable = false;
+    this.jobsStatus = JobStatus.Active;
+    this.fetchPaginatedJobs(); // Apply filters after resetting
+    this.calculateTotalPages();
+    this.calculateTotalPages();
+  }
+
   selectNewOption(isNew: boolean): void {
     this.IsNew = isNew;
     this.fetchPaginatedJobs();
@@ -160,6 +176,9 @@ export class ProjectComponent implements OnInit {
     if (searchStatus == SearchStatus.Ignored) {
       console.log('Parent : Search Ignored');
       this.fetchPaginatedJobs();
+      // reintialize again because the search changer their values
+      this.currentPage = 1;
+      this.pageSize = 5;
     } else if (searchStatus == SearchStatus.Found) {
       console.log('Parent : Search Found');
 
