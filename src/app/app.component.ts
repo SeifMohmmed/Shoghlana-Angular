@@ -17,18 +17,13 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.signalRService.startConnection();
 
-    this.signalRService.addNotificationListener((data: any) => {
-      this.notifications.push(data.message);
-      console.log('Notification received:', data.message);
-    });
+    setTimeout(() => {
+      this.signalRService.askServerListener();
+      this.signalRService.askServer();
+    }, 2000);
   }
 
   ngOnDestroy(): void {
-    this.signalRService.stopConnection();
-  }
-
-  // For testing: Method to manually send a notification
-  sendTestNotification(): void {
-    this.signalRService.triggerNotification('Test Notification from Angular');
+    this.signalRService.hubConnection?.off('askServerResponse');
   }
 }

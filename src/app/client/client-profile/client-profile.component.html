@@ -10,7 +10,7 @@
           </div>
           <div class="has-padding">
             <div class="user-info-column">
-              <div class="img marked position-relative">
+              <div class="img marked position-relative ms-5">
                 <img
                   *ngIf="client"
                   [src]="
@@ -23,7 +23,7 @@
                 />
                 <i
                   *ngIf="vistitedClientId === loggedInClientId"
-                  class="fa fa-solid fa-upload text-primary position-absolute upload-icon"
+                  class="fa fa-solid fa-upload text-primary upload-icon me-5"
                   (click)="TriggerFileInput()"
                 ></i>
                 <input

@@ -53,7 +53,7 @@ export class ClientProfileComponent implements OnInit, AfterViewInit {
     );
     console.log('Id From Local Stroage: ', this.loggedInClientId);
 
-    this.updatedClient.id = this.vistitedClientId;
+    this.updatedClient.id = Number(this.vistitedClientId);
 
     console.log('LoggedIn Client Id ' + this.loggedInClientId);
     console.log('Visited Client Id ' + this.vistitedClientId);
