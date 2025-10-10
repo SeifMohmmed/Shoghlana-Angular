@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { User } from '../Models/User/User';
+import { User } from '../../Shared/Models/User/User';
 import { environment } from '../../../environments/environment.development';
 
 @Injectable({
@@ -8,6 +8,8 @@ import { environment } from '../../../environments/environment.development';
 })
 export class IndividualChatService {
   baseURL = environment.baseURL;
+  myName: User | undefined;
+
   constructor(private http: HttpClient) {}
 
   registerUser(user: User) {

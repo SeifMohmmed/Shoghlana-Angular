@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { IdentityRoutingModule } from './identity-routing.module';
@@ -24,5 +24,6 @@ import { SharedModule } from '../Shared/Components/shared/shared.module';
     SharedModule,
   ],
   exports: [RegisterComponent, LoginComponent],
+  //schemas: [CUSTOM_ELEMENTS_SCHEMA], // ✅ Add this line
 })
 export class IdentityModule {}

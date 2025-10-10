@@ -1,5 +1,5 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { SignalRService } from './Shared/Services/signal-r.service';
+import { SignalRService } from './signal-r/signal-r.service';
 import { DarkModeService } from './Shared/Services/dark-mode.service';
 
 @Component({

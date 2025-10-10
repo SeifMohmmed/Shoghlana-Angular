@@ -8,6 +8,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ProjectDetailsComponent } from './project-details/project-details.component';
 import { AddprojectComponent } from './addproject/addproject.component';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { IndividualChatComponent } from '../signal-r/individual-chat/individual-chat.component';
+import { SignalRModule } from '../signal-r/signal-r.module';
 
 @NgModule({
   declarations: [
@@ -22,6 +24,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
     FormsModule,
     ReactiveFormsModule,
     NgSelectModule,
+    SignalRModule,
   ],
 })
 export class ProjectModule {}

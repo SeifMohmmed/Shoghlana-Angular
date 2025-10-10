@@ -7,6 +7,7 @@ import { JoinRoomComponent } from './join-room/join-room.component';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { NotificationComponent } from './notification/notification.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { IndividualChatComponent } from './individual-chat/individual-chat.component';
 
 @NgModule({
   declarations: [
@@ -14,6 +15,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     JoinRoomComponent,
     WelcomeComponent,
     NotificationComponent,
+    IndividualChatComponent,
   ],
   imports: [
     CommonModule,
@@ -21,5 +23,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     ReactiveFormsModule,
     FormsModule,
   ],
+  exports: [IndividualChatComponent],
 })
 export class SignalRModule {}
