@@ -5,51 +5,32 @@ import * as signalR from '@microsoft/signalr';
   providedIn: 'root',
 })
 export class SignalRService {
-  baseURL = 'https://localhost:7029/notificationHub';
-  private hubConnection: signalR.HubConnection;
+  hubConnection: signalR.HubConnection | undefined;
 
-  constructor() {
+  startConnection = () => {
     this.hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl(this.baseURL, {
-        accessTokenFactory: () => {
-          if (typeof window !== 'undefined' && localStorage) {
-            const token = localStorage.getItem('token');
-            return token ? token : '';
-          }
-          return '';
-        },
+      .withUrl('http://localhost:5092/individualChatHub', {
+        skipNegotiation: true,
+        transport: signalR.HttpTransportType.WebSockets,
       })
-      .withAutomaticReconnect()
-      .configureLogging(signalR.LogLevel.Information)
       .build();
-  }
 
-  startConnection(): void {
     this.hubConnection
       .start()
-      .then(() => console.log('SignalR Connection Started'))
-      .catch((err) =>
-        console.error('Error While Starting SignalR Connection: ', err)
-      );
-  }
+      .then(() => {
+        console.log('Hub Connection Started!');
+      })
+      .catch((err) => console.log('Error While Starting Connection' + err));
+  };
 
-  addNotificationListener(callback: (data: any) => void): void {
-    this.hubConnection.on('ReceiveNotification', callback);
+  askServer() {
+    this.hubConnection?.invoke('askServer', 'hey').catch((err) => {
+      console.error(err);
+    });
   }
-
-  stopConnection(): void {
-    this.hubConnection
-      .stop()
-      .then(() => console.log('SignalR Connection Stopped'))
-      .catch((err) =>
-        console.error('Error While Stopping SignalrR Connection: ' + err)
-      );
-  }
-
-  // For testing: Method to manually trigger a notification
-  triggerNotification(message: string): void {
-    this.hubConnection
-      .invoke('SendNotificationToAll', message)
-      .catch((err) => console.error(err));
+  askServerListener() {
+    this.hubConnection?.on('askServerResponse', (someText) => {
+      console.log(someText);
+    });
   }
 }

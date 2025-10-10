@@ -8,6 +8,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ProposalService } from '../../offers/proposal.service';
 import Swal from 'sweetalert2';
 import { JobStatus } from '../../Shared/Enums/JobStatus/JobStatus';
+import { FreelancersService } from '../../freelancers/freelancers.service';
+import { IndividualChatService } from '../../Shared/Services/individual-chat.service';
+import { User } from '../../Shared/Models/User/User';
 
 @Component({
   selector: 'app-project-details',
@@ -21,11 +24,19 @@ export class ProjectDetailsComponent implements OnInit {
   proposal: IProposal;
   proposalForm: FormGroup;
   jobStatus = JobStatus;
+  proposalId: any;
+  proposalDetails: any;
+  freelancerId: any;
+  freelancerDetails: any[] = [];
+  freelancerName: any;
+  apiErrorMessage: string[] = [];
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private projectService: ProjectService,
     private proposalService: ProposalService,
+    private freelancerService: FreelancersService,
+    private individualChatService: IndividualChatService,
     private fb: FormBuilder,
     private location: Location,
     private datePipe: DatePipe
@@ -36,21 +47,81 @@ export class ProjectDetailsComponent implements OnInit {
 
     this.projectService.getById(id).subscribe({
       next: (res) => {
+        console.log('Project response:', res);
+
         if (res.isSuccess) {
           this.clientJob = res.data;
+          this.proposalForm.patchValue({ JobId: id });
         } else {
           console.error('Unexpected response structure:', res);
         }
       },
       error: (err) => console.log(err),
     });
+    this.formValidator();
 
+    this.proposalService.getProposalByJobId(id).subscribe({
+      next: (res) => {
+        console.log('Proposal response:', res);
+        this.proposalDetails = res.data;
+        console.log('proposal Details: ', this.proposalDetails);
+
+        if (Array.isArray(this.proposalDetails)) {
+          this.proposalDetails.forEach((proposal: { freelancerId: any }) => {
+            const freelancerId = proposal.freelancerId;
+            console.log('freelancerId', freelancerId);
+
+            this.freelancerService.getById(freelancerId).subscribe({
+              next: (freelancerRes) => {
+                console.log('freelancer data: ', freelancerRes);
+                if (freelancerRes && typeof freelancerRes === 'object') {
+                  this.freelancerDetails.push(freelancerRes.data);
+                  this.freelancerName = freelancerRes.data.name;
+                  console.log('name', this.freelancerName);
+                } else {
+                  console.error(
+                    'Unexpected freelancer response format',
+                    freelancerRes
+                  );
+                }
+              },
+              error: (err) => {
+                console.error('Error fetching freelancer data: ', err);
+              },
+            });
+          });
+        } else {
+          console.error('Unexpected response data format: ', res.data);
+        }
+      },
+      error: (err) => {
+        console.error('Error fetching proposal data', err);
+      },
+    });
+  }
+
+  formValidator() {
     this.proposalForm = this.fb.group({
       Description: ['', [Validators.required]],
       Price: ['', [Validators.required]],
       Duration: ['', [Validators.required]],
       JobId: ['', [Validators.required]],
       FreelancerId: ['', [Validators.required]],
+    });
+  }
+
+  chat() {
+    this.apiErrorMessage = [];
+    const user: User = { name: this.freelancerName };
+    this.individualChatService.registerUser(user).subscribe({
+      next: () => {
+        console.log('openChat');
+      },
+      error: (err) => {
+        if (typeof err.error !== 'object') {
+          this.apiErrorMessage.push(err.error);
+        }
+      },
     });
   }
 

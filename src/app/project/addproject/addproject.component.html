@@ -6,192 +6,154 @@
       <div class="col-3 mx-5">
         <div dir="rtl">
           <h6>
-            <i class="fa-solid fa-backward-fast ms-2"></i> ابدأ بإنجاز مشروعك
+            <i class="fa-solid fa-backward-fast ms-2"></i>
+            أضف خدمتك وابدأ بتحقيق الأرباح
           </h6>
           <p>
-            تستطيع إنجاز مشروعك بالشكل الذي تريده من خلال شغلانة، أدخل تفاصيل
-            المشروع والميزانية والمدة المتوقعة ليتم مراجعته ونشره مجاناً، بعد
-            ذلك سيظهر للمستقلين في صفحة المشاريع ويقدموا عروضهم عليه لتختار
-            العرض الأنسب لك ويبدأ المستقل بتنفيذ المشروع.
+            يتيح لك شغلانة إمكانية تحقيق الأرباح عبر إضافة خدمات تجيد تنفيذها
+            وإتاحتها للبيع للعملاء المهتمين. أدخل تفاصيل الخدمة بعناية ليقوم
+            فريق خمسات بمراجعتها ونشرها.
+          </p>
+        </div>
+        <div>
+          <h6 dir="rtl">نصائح لإضافة خدمة صحيحة</h6>
+        </div>
+        <h6 class="text-end py-3">
+          <i class="fa-solid fa-plus ms-2"></i> عنوان الخدمة
+        </h6>
+        <p dir="rtl">
+          اختر عنوانًا مختصرًا وواضحًا يعكس ما ستقدمه بالتحديد في خدمتك، ليتمكن
+          المشترين من العثور عليها عند البحث بكلمات ذات صلة بمجال الخدمة.
+        </p>
+        <div dir="rtl">
+          <h6 class="py-3">
+            <i class="fa-solid fa-briefcase ms-2"></i> وصف الخدمة
+          </h6>
+          <p dir="rtl">
+            اكتب وصفًا مميزًا للخدمة بلغة سليمة خالية من الأخطاء، تشرح خلاله ما
+            سيحصل عليه العميل بالتفصيل عند شراء الخدمة.
           </p>
         </div>
 
-        <h6 class="text-end py-3">
-          <i class="fa-solid fa-plus ms-2"></i>أنشر مشروعك على شغلانة
-        </h6>
-        <p dir="rtl">
-          تساعدك منصة شغلانة على الوصول إلى أفضل المستقلين المحترفين لإنجاز
-          أعمالك عن بعد .<br />
-          بعد إضافة مشروعك على شغلانة ومراجعته ، سيتقدم إليك عدد من العروض من
-          المستقلين المتخصيين يمكنك إختيار العرض الأنسب لك من العروض المقدمة
-          وإعتماده
-        </p>
         <div dir="rtl">
-          <h6 class="mx-3">
-            <i class="fa-regular fa-lightbulb ms-2"></i>نصائح إضافة المشروع
+          <h6 class="py-3">
+            <i class="fa-solid fa-briefcase ms-2"></i>
+            وصف الخدمة
           </h6>
-
-          <ul>
-            <li>أدخل تفاصيل المشروع بدقة</li>
-            <li>املأ جميع الحقول ووفّر أمثلة لما تريد</li>
-            <li>جزّء المشروع على عدّة مراحل صغيرة</li>
-          </ul>
+          <p dir="rtl">
+            أضف صورة معبرة عن الخدمة بالإضافة إلى ثلاثة نماذج حصرية على الأقل
+            تعرّف المشتري من خلالها على أسلوبك في العمل ومهاراتك.
+          </p>
         </div>
+        <div dir="rtl">
+          <h6 class="py-3">
+            <i class="fa-solid fa-briefcase ms-2"></i>
+            سعر الخدمة
+          </h6>
+          <p dir="rtl">
+            احرص على تحديد سعر مناسب للخدمة بناء على حجم العمل والجهد المبذول مع
+            الأخذ بعين الاعتبار عمولة الموقع، وحدد مدة تسليم مناسبة لإنجاز
+            الخدمة بإتقان
+          </p>
+        </div>
+
         <hr />
       </div>
       <div class="col-8 text-end ms-3">
-        <h3 class="mb-4 mx-2">إضافة مشروع</h3>
+        <h3 class="mb-4 mx-2">إضافة خدمة جديد</h3>
         <div class="container my-2 py-2">
-          <form [formGroup]="projectForm" (ngSubmit)="addProject()">
+          <form>
             <div class="col-11">
-              <label for="Project-Title">عنوان المشروع</label>
+              <label for="Project-Title">عنوان الخدمة </label>
               <input
                 type="text"
                 id="Project-Title"
                 name="Project-Title"
-                class="w-100"
-                formControlName="title"
+                class="w-100 form-control"
                 required
               />
-              <small>أدرج عنوانا موجزا يصف مشروعك بشكل دقيق</small>
+              <small>
+                أدخل عنواناً واضحاً باللغة العربية يصف الخدمة التي تريد أن
+                تقدمها. لا تدخل رموزاً أو كلمات مثل "حصرياً"، "لأول مرة"، "لفترة
+                محدود".. الخ.
+              </small>
             </div>
             <div class="col-11">
-              <div class="form-check d-flex justify-content-between">
-                <div class="form-check-item d-flex align-items-center">
-                  <!-- <input
-                    class="form-check-input"
-                    type="checkbox"
-                    value=""
-                    id="checkbox1"
-                  /> -->
-                  <label class="form-check-label mx-4" for="checkbox1"
-                    >Option 1</label
-                  >
-                </div>
-                <div class="form-check-item d-flex align-items-center">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    value=""
-                    id="checkbox2"
-                  />
-                  <label class="form-check-label mx-4" for="checkbox2"
-                    >Option
-                  </label>
-                </div>
-                <div class="form-check-item d-flex align-items-center">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    value=""
-                    id="checkbox3"
-                  />
-                  <label class="form-check-label mx-4" for="checkbox3"
-                    >Option 3</label
-                  >
-                </div>
-                <div class="form-check-item d-flex align-items-center">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    value=""
-                    id="checkbox1"
-                  />
-                  <label class="form-check-label mx-4" for="checkbox1"
-                    >Option 1</label
-                  >
-                </div>
-                <div class="form-check-item d-flex align-items-center">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    value=""
-                    id="checkbox2"
-                  />
-                  <label class="form-check-label mx-4" for="checkbox2"
-                    >Option
-                  </label>
-                </div>
-                <div class="form-check-item d-flex align-items-center">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    value=""
-                    id="checkbox3"
-                  />
-                  <label class="form-check-label mx-4" for="checkbox3"
-                    >Option 3</label
-                  >
-                </div>
+              <label for="Project-Skills"> معرض الخدمة </label>
+              <div class="my-3">
+                <input type="file" id="file1" name="upload" />
               </div>
             </div>
             <div class="col-11 mt-3">
-              <label for="description">قم بوصف المشروع</label>
+              <label for="offer-details">قم بوصف الخدمة </label>
               <textarea
-                id="description"
-                name="description"
-                class="w-100"
+                id="offer-details"
+                name="offer-details"
+                class="w-100 form-control"
                 rows="4"
-                formControlName="description"
                 required
               ></textarea>
-              <small>أدرج وصفا مفصّلا ودقيقا لمشروعك.</small>
+              <small>أدرج وصفا مفصّلا ودقيقا للخدمة .</small>
+            </div>
+            <div class="col-11 mt-2">
+              <label for="link"> كلمات افتتاحية </label>
+              <input
+                type="url"
+                id="link"
+                name="link"
+                class="w-100 form-control"
+              />
+              <small> اختر الكلمات المفتاحية المناسبة بحد أقصى 5 كلمات </small>
             </div>
 
             <div class="d-flex">
-              <div class="col-5 ms-5">
-                <label for="offer-value">
-                  الحد الادنى للميزانية المتوقعة
+              <div class="col-md-5 mx-2">
+                <label for="project-category" class="form-label">
+                  سعر الخدمة
                 </label>
-                <input
-                  type="number"
-                  id="minBudget"
-                  name="minBudget"
-                  formControlName="minBudget"
-                />
-
-                <small>اختر ميزانية مناسبة لتحصل على عروض جيدة</small>
+                <select
+                  id="project-category"
+                  class="form-select"
+                  formControlName="categoryId"
+                  required
+                >
+                  <option disabled selected>اختر سعر</option>
+                  <option></option>
+                </select>
               </div>
-              <div class="col-5">
-                <label for="offer-value">
-                  الحد الاعلي للميزانية المتوقعة
-                </label>
-                <input
-                  type="number"
-                  id="maxBudget"
-                  name="maxBudget"
-                  formControlName="maxBudget"
-                />
+
+              <div class="col-md-5 mx-5">
+                <label for="project-category" class="form-label"
+                  >تصنيف المشروع</label
+                >
+                <select
+                  id="project-category"
+                  class="form-select"
+                  formControlName="categoryId"
+                  required
+                >
+                  <option disabled selected>اختر تصنيف</option>
+                  <option></option>
+                </select>
               </div>
             </div>
-            <div>
-              <label for="delivery-time">
-                المدة المتوقعة للتسليم <span> (بالأيام) </span></label
-              >
-              <input
-                type="number"
-                id="delivery-time"
-                name="delivery-time"
-                class="w-75"
+            <div class="col-11 mt-3">
+              <label for="offer-details"> تعليمات للمشتري </label>
+              <textarea
+                id="offer-details"
+                name="offer-details"
+                class="w-100 form-control"
+                rows="4"
                 required
-                formControlName="durationInDays"
-              />
-              <br />
-              <small>متى تحتاج استلام مشروعك</small>
+              ></textarea>
+              <small>
+                المعلومات التي تحتاجها من المشتري لتنفيذ الخدمة. تظهر هذه
+                المعلومات بعد شراء الخدمة فقط.
+              </small>
             </div>
-
-            <div class="skills-container">
-              <label for="Project-Skills"> مهارات متعلقة بالمشروع </label>
-              <ng-select
-                [items]="skillsIds"
-                bindLabel="title"
-                bindValue="id"
-                placeholder="أضف مهارة"
-                [multiple]="true"
-              >
-              </ng-select>
-            </div>
-            <button type="submit" class="btn btn-success mt-3">أضف عرضك</button>
+            <button type="submit" class="btn btn-success mt-3">
+              أضف الخدمة
+            </button>
           </form>
           <h1></h1>
         </div>
