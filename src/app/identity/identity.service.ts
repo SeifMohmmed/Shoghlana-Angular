@@ -17,7 +17,7 @@ import { isPlatformBrowser } from '@angular/common';
 export class IdentityService {
   baseURL = environment.baseURL;
   private email: string = '';
-  userData = new BehaviorSubject(null);
+  userData = new BehaviorSubject<GoogleAuthData | null>(null);
 
   constructor(
     private http: HttpClient,
@@ -25,7 +25,7 @@ export class IdentityService {
     private router: Router,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
-    // ✅ Only access localStorage in the browser
+    // Only access localStorage in the browser
     if (isPlatformBrowser(this.platformId)) {
       const token = localStorage.getItem('token');
       if (token !== null) {
@@ -44,7 +44,7 @@ export class IdentityService {
       if (encodedToken) {
         const decodedToken: any = jwtDecode(encodedToken);
         console.log(decodedToken);
-        this.userData.next(decodedToken);
+        console.log('we have decoded token' + decodedToken);
       } else {
         console.error('Token not found in localStorage');
       }

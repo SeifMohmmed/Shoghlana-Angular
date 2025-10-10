@@ -50,14 +50,19 @@ export class LoginComponent implements OnInit {
             localStorage.setItem('token', response.token);
             localStorage.setItem('Id', response.data.id);
             this.identityService.decodeUserData();
+            this.identityService.userData.next(response.data); // navbar keep track for changes
+
             this.isLoading = false;
             this.router.navigateByUrl('/');
+          } else {
+            this.isLoading = false;
+            this.apiError = response.message;
           }
         },
         error: (err) => {
           this.isLoading = false;
           this.apiError = err.error?.errors ?? 'حدث خطأ غير متوقع';
-          alert(this.apiError);
+          // alert(this.apiError);
         },
       });
     }

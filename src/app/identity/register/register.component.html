@@ -198,6 +198,9 @@
         </div>
         <button class="btn btn-success" (click)="addnewphone">+</button> -->
         <!-- ================= SUBMIT ================= -->
+        <span class="text-danger" *ngIf="apiError">
+          {{ apiError }}
+        </span>
         <button [disabled]="RegisterForm.invalid" type="submit" class="btn">
           <i *ngIf="isLoading" class="fa fa-spinner fa-spin"></i>
           إنشاء حساب
@@ -208,14 +211,14 @@
 
         <div class="flex-row">
           <!-- <button class="google-signin-btn"> -->
-          <!-- <asl-google-signin-button
-            type="standard"
+          <asl-google-signin-button
             class="google-signin-btn d-block m-auto"
+            type="standard"
             size="large"
           >
             <i class="fab fa-google"></i>
             سجل بواسطة جوجل
-          </asl-google-signin-button> -->
+          </asl-google-signin-button>
           <!-- </button> -->
         </div>
       </form>

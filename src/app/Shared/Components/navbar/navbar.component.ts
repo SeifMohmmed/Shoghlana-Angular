@@ -20,7 +20,9 @@ export class NavbarComponent implements OnInit {
   isLogged: boolean = false;
   isOpen: boolean = false;
   messages: any;
-  clientId: number | null;
+  Id: number | null;
+  isFreelancer: boolean = false;
+  isClient: boolean = false;
   darkModeService: DarkModeService = inject(DarkModeService);
 
   constructor(
@@ -40,8 +42,14 @@ export class NavbarComponent implements OnInit {
     // Only access localStorage in the browser
     if (isPlatformBrowser(this.platformId)) {
       const id = localStorage.getItem('Id');
-      this.clientId = id ? Number(id) : null;
-      console.log('Client Id from navbar' + this.clientId);
+      this.Id = id ? Number(id) : null;
+      console.log('Id from navbar' + this.Id);
+
+      if (localStorage.getItem('Role') === 'Client') {
+        this.isClient = true;
+      } else {
+        this.isFreelancer = true;
+      }
     }
     this.chatService.messages$.subscribe((res) => {
       this.messages = res;

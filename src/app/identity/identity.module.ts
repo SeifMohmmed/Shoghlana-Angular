@@ -7,6 +7,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { LoginComponent } from './login/login.component';
 import { RoleSelectionPopupComponent } from './role-selection-popup/role-selection-popup.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { SocialLoginModule } from '@abacritt/angularx-social-login';
+import { SharedModule } from '../Shared/Components/shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -19,6 +21,7 @@ import { TranslateModule } from '@ngx-translate/core';
     IdentityRoutingModule,
     ReactiveFormsModule,
     TranslateModule,
+    SharedModule,
   ],
   exports: [RegisterComponent, LoginComponent],
 })
