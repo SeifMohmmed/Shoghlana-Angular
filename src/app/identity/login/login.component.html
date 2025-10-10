@@ -90,6 +90,7 @@
           تسجيل الدخول
         </button>
 
+        <span *ngIf="apiError" class="text-danger">{{ apiError }} </span>
         <p class="p">ليس لديك حساب؟ <span class="span">سجل الآن</span></p>
         <p class="p line">أو</p>
 

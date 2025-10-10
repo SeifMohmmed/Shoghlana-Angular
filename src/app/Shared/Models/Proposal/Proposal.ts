@@ -15,6 +15,6 @@ export interface IProposal {
   freelancerName: string;
   freelancerTitle: string;
   jobId: number;
-  jobTitle: string;
-  clientName: string;
+  jobTitle?: string;
+  clientName?: string;
 }

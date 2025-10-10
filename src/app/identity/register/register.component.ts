@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -12,20 +12,22 @@ import { UserRoleService } from '../user-role.service';
 import { SocialAuthService } from '@abacritt/angularx-social-login';
 import Swal from 'sweetalert2';
 import { TranslateService } from '@ngx-translate/core';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent implements OnInit, OnDestroy {
   isLoading: boolean = false;
-  apiError: string = '';
+  apiError: string | undefined = '';
   RegisterForm: FormGroup;
-  googleAuthData: GoogleAuthData;
+  googleAuthData: GoogleAuthData | null;
   userRole: number;
   email: string = '';
   showModel2: boolean = false;
+  private authStateSubscription!: Subscription;
 
   constructor(
     private fb: FormBuilder,
@@ -38,39 +40,56 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit(): void {
     this.formValidator();
+
     this.userRole = this.userRoleService.get();
-    this.socialAuthService.authState.subscribe({
-      next: (res) => {
-        console.log(res);
-        console.log('Role Before adding to google obj ' + this.userRole);
-        // this.googleAuthData = res
-        this.googleAuthData.email = res.email;
-        this.googleAuthData.firstName = res.firstName;
-        this.googleAuthData.id = res.id;
-        this.googleAuthData.idToken = res.idToken;
-        this.googleAuthData.name = res.name;
-        this.googleAuthData.photoUrl = res.photoUrl;
-        //  this.googleAuthData.role = this.UserRole
+    // console.log(this.UserRole)
+    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
+    //Add 'implements OnInit' to the class.
+    console.log('hello from external auth func');
+    this.authStateSubscription = this.socialAuthService.authState.subscribe({
+      next: (result) => {
+        console.log(result);
+        console.log('role before adding to google obj' + this.userRole);
+        // this.googleAuthData = result
+        if (this.googleAuthData) {
+          this.googleAuthData.email = result.email;
+          this.googleAuthData.firstName = result.firstName;
+          this.googleAuthData.id = result.id;
+          this.googleAuthData.idToken = result.idToken;
+          this.googleAuthData.name = result.name;
+          this.googleAuthData.photoUrl = result.photoUrl;
+          //  this.googleAuthData.role = this.UserRole
 
-        console.log('role in google obj google' + this.googleAuthData.role);
+          console.log('role in google obj google' + this.googleAuthData.role);
 
-        console.log(this.googleAuthData);
+          console.log(this.googleAuthData);
 
-        this.identityService
-          .googleAuthentication(this.googleAuthData)
-          .subscribe({
-            next: (res) => {
-              console.log(res);
-              if (res.isSuccess) {
-                localStorage.setItem('UserToken', res.data.idToken);
-                console.log('client id from backend' + res.data.id);
-                localStorage.setItem('Id', res.data.id);
-                console.log(localStorage.getItem('Id'));
-                this.router.navigateByUrl('/');
-              }
-            },
-            error: (err) => console.log(err),
-          });
+          this.identityService
+            .googleAuthentication(this.googleAuthData)
+            .subscribe({
+              next: (res) => {
+                console.log(res);
+                if (res.isSuccess) {
+                  localStorage.setItem('token', res.data.idToken);
+                  console.log('client id from backend' + res.data.id);
+                  localStorage.setItem('Id', res.data.id);
+                  localStorage.setItem('Role', res.data.role.toString());
+                  this.identityService.userData.next(res.data);
+                  console.log(this.identityService.userData); // here
+                  console.log(localStorage.getItem('Id'));
+                  this.router.navigateByUrl('/home');
+                }
+                this.clearAuthState();
+              },
+              error: (err) => {
+                console.log(err);
+                this.clearAuthState();
+              },
+              complete: () => {
+                this.clearAuthState();
+              },
+            });
+        }
       },
       error: (err) => {
         console.log(err);
@@ -79,6 +98,10 @@ export class RegisterComponent implements OnInit {
         console.log('Completed');
       },
     });
+  }
+
+  ngOnDestroy(): void {
+    this.clearAuthState();
   }
 
   formValidator() {
@@ -150,6 +173,9 @@ export class RegisterComponent implements OnInit {
                 // canceled
               }
             });
+          } else {
+            this.isLoading = false;
+            this.apiError = response.message;
           }
         },
         error: (error) => {
@@ -185,5 +211,13 @@ export class RegisterComponent implements OnInit {
 
   onRoleSelected(role: string) {
     console.log(role);
+  }
+
+  private clearAuthState(): void {
+    this.googleAuthData = null;
+    // Unsubscribe from the authState observable
+    if (this.authStateSubscription) {
+      this.authStateSubscription.unsubscribe();
+    }
   }
 }

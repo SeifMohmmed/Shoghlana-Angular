@@ -25,7 +25,13 @@ export class ProposalService {
 
   getProposalByJobId(id: number): Observable<ApiResponse<IProposal>> {
     return this.http.get<ApiResponse<IProposal>>(
-      this.baseURL + 'GetByJobId/' + id
+      this.baseURL + 'Proposal/JobId/' + id
+    );
+  }
+
+  getProposalByFreelancerId(id: number): Observable<ApiResponse<IProposal>> {
+    return this.http.get<ApiResponse<IProposal>>(
+      this.baseURL + 'Proposal/FreelancerId/' + id
     );
   }
 
