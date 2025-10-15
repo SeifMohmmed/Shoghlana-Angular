@@ -5,15 +5,15 @@ import { UserRole } from '../Shared/Enums/UserRole/UserRole';
   providedIn: 'root',
 })
 export class UserRoleService {
-  role: number;
+  role: number | null;
 
   constructor() {}
 
-  set(role: UserRole) {
+  set(role: UserRole | null) {
     this.role = Number(role);
   }
 
-  get(): number {
+  get(): number | null {
     return this.role;
   }
 }

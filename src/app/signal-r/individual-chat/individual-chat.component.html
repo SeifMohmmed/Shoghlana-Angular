@@ -16,24 +16,39 @@
     <div class="card border-secondary mb-3">
       <div class="card-header h3 text-muted text-center">Users</div>
       <div class="card-body" style="min-height: 555px">
-        <div class="row mt-1">
+        <div
+          class="row mt-1"
+          *ngFor="let user of individualChatService.onlineUsers"
+        >
           <div class="col">
             <div class="d-grid">
-              <button type="button" class="btn btn-success card-text btn-block">
-                {{ individualChatService.myName?.name }}
+              <button
+                type="button"
+                class="btn card-text btn-block"
+                [ngClass]="{
+                  'btn-success': user === individualChatService.myName?.name,
+                  'btn-dark': user !== individualChatService.myName?.name
+                }"
+                [disabled]="user === individualChatService.myName?.name"
+              >
+                {{ user }}
               </button>
             </div>
           </div>
         </div>
-        <div class="row mt-1">
-          <div class="col">
-            <div class="d-grid">
-              <button type="button" class="btn btn-dark card-text btn-block">
-                User2
-              </button>
-            </div>
-          </div>
-        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-9">
+    <div class="card border-secondary">
+      <div class="card-header h3 text-muted text-center">Messages</div>
+      <div class="card-body" style="min-height: 500px">
+        <app-messages [messages]="individualChatService.message"></app-messages>
+      </div>
+      <div class="card-footer">
+        <app-chat-input
+          (contentEmitter)="sendMessages($event)"
+        ></app-chat-input>
       </div>
     </div>
   </div>

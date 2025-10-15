@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
+  AbstractControl,
   FormBuilder,
   FormControl,
   FormGroup,
@@ -24,7 +25,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   apiError: string | undefined = '';
   RegisterForm: FormGroup;
   googleAuthData: GoogleAuthData | null;
-  userRole: number;
+  userRole!: number | null;
   email: string = '';
   showModel2: boolean = false;
   private authStateSubscription!: Subscription;
@@ -58,7 +59,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
           this.googleAuthData.idToken = result.idToken;
           this.googleAuthData.name = result.name;
           this.googleAuthData.photoUrl = result.photoUrl;
-          //  this.googleAuthData.role = this.UserRole
+          this.googleAuthData.role = this.userRole;
 
           console.log('role in google obj google' + this.googleAuthData.role);
 
@@ -70,14 +71,37 @@ export class RegisterComponent implements OnInit, OnDestroy {
               next: (res) => {
                 console.log(res);
                 if (res.isSuccess) {
+                  // if user tried to navigate to signin via url >> allowed >>
+                  //  if try to login using another account while he is already logged in >>
+                  // make logout first to avoid conflicts
+                  this.identityService.logOut();
+                  console.log('continuing after logout');
+
                   localStorage.setItem('token', res.data.idToken);
                   console.log('client id from backend' + res.data.id);
                   localStorage.setItem('Id', res.data.id);
-                  localStorage.setItem('Role', res.data.role.toString());
+                  if (localStorage.getItem('Id')) {
+                    const id: any = Number(localStorage.getItem('Id'));
+                    this.identityService.id.next(id);
+                  }
+                  localStorage.setItem('Role', res.data.role?.toString() ?? '');
+                  this.userRole = res.data.role ?? null;
+
+                  if (localStorage.getItem('Role') === 'Client') {
+                    const role: any = 'Client';
+                    this.identityService.isClient.next(role);
+                  } else if (localStorage.getItem('Role') === 'Freelancer') {
+                    const role: any = 'Freelancer';
+                    this.identityService.isFreelancer.next(role);
+                  }
+
                   this.identityService.userData.next(res.data);
                   console.log(this.identityService.userData); // here
                   console.log(localStorage.getItem('Id'));
-                  this.router.navigateByUrl('/home');
+                  console.log('before navigation to home');
+
+                  this.router.navigateByUrl('/');
+                  this.userRoleService.set(null);
                 }
                 this.clearAuthState();
               },
@@ -105,44 +129,54 @@ export class RegisterComponent implements OnInit, OnDestroy {
   }
 
   formValidator() {
-    this.RegisterForm = this.fb.group({
-      username: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(3),
-          Validators.maxLength(20),
+    this.RegisterForm = this.fb.group(
+      {
+        username: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(3),
+            Validators.maxLength(20),
+          ],
         ],
-      ],
-      email: ['', [Validators.required, Validators.email]],
-      password: [
-        '',
-        [
-          Validators.required,
-          Validators.pattern(
-            /^(?=.*[0-9])(?=.*[#$@!.\-])[A-Za-z\d#$@!.\-]{8,}$/
-          ),
+        email: ['', [Validators.required, Validators.email]],
+        password: [
+          '',
+          [
+            Validators.required,
+            Validators.pattern(
+              /^(?=.*[0-9])(?=.*[#$@!.\-])[A-Za-z\d#$@!.\-]{8,}$/
+            ),
+          ],
         ],
-      ],
-      repeatPassword: [
-        '',
-        [
-          Validators.required,
-          Validators.pattern(
-            /^(?=.*[0-9])(?=.*[#$@!.\-])[A-Za-z\d#$@!.\-]{8,}$/
-          ),
+        repeatPassword: [
+          '',
+          [
+            Validators.required,
+            Validators.pattern(
+              /^(?=.*[0-9])(?=.*[#$@!.\-])[A-Za-z\d#$@!.\-]{8,}$/
+            ),
+          ],
         ],
-      ],
-      phoneNumber: [
-        '',
-        [Validators.required, Validators.pattern(/^01[0125][0-9]{8}$/)],
-      ],
-      role: new FormControl(this.userRoleService.get()),
-      // phoneNumbers:new FormArray([new FormControl('')])
-    });
+        phoneNumber: [
+          '',
+          [Validators.required, Validators.pattern(/^01[0125][0-9]{8}$/)],
+        ],
+        role: new FormControl(this.userRoleService.get()),
+        // phoneNumbers:new FormArray([new FormControl('')])
+      },
+      { validators: this.PasswordMatchValidator }
+    );
     const lang = localStorage.getItem('language') || 'en';
     this.translateService.setDefaultLang(lang);
     this.translateService.use(lang);
+  }
+
+  PasswordMatchValidator(control: AbstractControl) {
+    return control.get('password')?.value ===
+      control.get('repeatPassword')?.value
+      ? null
+      : { mismatch: true };
   }
 
   handleRegister(registerForm: FormGroup) {
@@ -219,5 +253,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
     if (this.authStateSubscription) {
       this.authStateSubscription.unsubscribe();
     }
+    this.socialAuthService.signOut();
   }
 }

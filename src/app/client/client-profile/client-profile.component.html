@@ -22,7 +22,7 @@
                   class="img-fluid rounded-circle"
                 />
                 <i
-                  *ngIf="vistitedClientId === loggedInClientId"
+                  *ngIf="vistitedClientId === loggedIn && isClient"
                   class="fa fa-solid fa-upload text-primary upload-icon me-5"
                   (click)="TriggerFileInput()"
                 ></i>
@@ -61,7 +61,7 @@
                   </div>
                 </div>
                 <span
-                  *ngIf="vistitedClientId === loggedInClientId"
+                  *ngIf="vistitedClientId === loggedIn && isClient"
                   class="d-inline-block ms-2"
                 >
                   <i
@@ -165,7 +165,7 @@
             </span>
             <span
               class="d-inline-block"
-              *ngIf="vistitedClientId === loggedInClientId"
+              *ngIf="vistitedClientId === loggedIn && isClient"
             >
               <button
                 class="btn btn-outline-light bg-primary text-white ms-3"

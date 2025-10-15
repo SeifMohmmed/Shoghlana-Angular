@@ -4,6 +4,7 @@ import { ProjectComponent } from './project/project.component';
 import { ProjectDetailsComponent } from './project-details/project-details.component';
 import { AddprojectComponent } from './addproject/addproject.component';
 import { authGuard } from '../Guards/auth.guard';
+import { freelancerGuard } from '../Guards/freelancer.guard';
 
 const routes: Routes = [
   {
@@ -19,6 +20,7 @@ const routes: Routes = [
 
   {
     path: 'addproject',
+    canActivate: [freelancerGuard],
     component: AddprojectComponent,
   },
 ];

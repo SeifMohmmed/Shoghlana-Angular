@@ -4,7 +4,9 @@
   <div class="ms-auto d-flex align-items-center dark:bg-gray-800">
     <ul class="navbar-nav dark:bg-gray-100">
       <li *ngIf="isLogged" class="nav-item">
-        <a class="nav-link" (click)="logout()">تسجيل خروج</a>
+        <a style="cursor: pointer" class="nav-link" (click)="logout()"
+          >تسجيل خروج</a
+        >
       </li>
     </ul>
   </div>
@@ -68,8 +70,13 @@
           </div>
         </div>
 
-        <li *ngIf="isLogged" class="nav-item active">
+        <li *ngIf="isLogged && isClient" class="nav-item active">
           <a class="nav-link" [routerLink]="['/client', Id]"> الملف الشخصي</a>
+        </li>
+        <li *ngIf="isLogged && isFreelancer" class="nav-item active">
+          <a class="nav-link" [routerLink]="['/freelancer', Id]">
+            الملف الشخصي</a
+          >
           <!--client profile not freelancer-->
         </li>
         <li *ngIf="isLogged" class="nav-item active">
@@ -92,11 +99,7 @@
           >
         </li>
         <li *ngIf="isLogged" class="nav-item">
-          <a
-            class="nav-link dark:hover:text-green-500"
-            routerLink="/galleryworks"
-            >معرض الأعمال</a
-          >
+          <a [routerLink]="['/galleryworks']">معرض الأعمال</a>
         </li>
         <li *ngIf="isLogged" class="nav-item">
           <a
@@ -105,13 +108,13 @@
             >رواد الأعمال</a
           >
         </li>
-        <li *ngIf="isLogged" class="nav-item">
+        <!-- <li *ngIf="isLogged" class="nav-item">
           <a
             class="nav-link text-gray-200 dark:hover:text-green-500"
             routerLink="/jobs"
             >المشاريع</a
           >
-        </li>
+        </li> -->
         <li *ngIf="isLogged" class="nav-item">
           <a class="nav-link dark:hover:text-green-500" routerLink="/offers">
             عروضي</a

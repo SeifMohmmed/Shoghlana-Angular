@@ -9,7 +9,7 @@ import { BehaviorSubject } from 'rxjs';
 export class ChatService {
   baseURL = environment.baseURL;
   public connection: signalR.HubConnection = new signalR.HubConnectionBuilder()
-    .withUrl(this.baseURL + 'ChatHub')
+    .withUrl('https://localhost:7029/ChatHub')
     .configureLogging(signalR.LogLevel.Information)
     .build();
   public messages$ = new BehaviorSubject<any>([]);

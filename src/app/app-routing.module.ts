@@ -3,6 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { NotFoundComponent } from './Shared/Components/not-found/not-found.component';
 import { HomeComponent } from './home/home.component';
 import { authGuard } from './Guards/auth.guard';
+import { freelancerGuard } from './Guards/freelancer.guard';
+import { clientGuard } from './Guards/client.guard';
 
 const routes: Routes = [
   {
@@ -19,6 +21,7 @@ const routes: Routes = [
 
   {
     path: 'freelancers',
+    canActivate: [clientGuard],
     loadChildren: () =>
       import('./freelancers/freelancers.module').then(
         (m) => m.FreelancersModule
@@ -46,7 +49,7 @@ const routes: Routes = [
 
   {
     path: 'offers',
-    canActivate: [authGuard],
+    canActivate: [freelancerGuard],
     loadChildren: () =>
       import('./offers/offers.module').then((m) => m.OffersModule),
   },
@@ -67,12 +70,14 @@ const routes: Routes = [
 
   {
     path: 'addservice',
+    canActivate: [freelancerGuard],
     loadChildren: () =>
       import('./addservice/addservice.module').then((m) => m.AddserviceModule),
   },
 
   {
     path: 'galleryworks',
+    //canActivate: [freelancerGuard],
     loadChildren: () =>
       import('./work-gallary/work-gallary.module').then(
         (m) => m.WorkGallaryModule

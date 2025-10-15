@@ -8,6 +8,8 @@ import { WelcomeComponent } from './welcome/welcome.component';
 import { NotificationComponent } from './notification/notification.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IndividualChatComponent } from './individual-chat/individual-chat.component';
+import { ChatInputComponent } from './chat-input/chat-input.component';
+import { MessagesComponent } from './messages/messages.component';
 
 @NgModule({
   declarations: [
@@ -16,6 +18,8 @@ import { IndividualChatComponent } from './individual-chat/individual-chat.compo
     WelcomeComponent,
     NotificationComponent,
     IndividualChatComponent,
+    ChatInputComponent,
+    MessagesComponent,
   ],
   imports: [
     CommonModule,
