@@ -24,8 +24,8 @@ const routes: Routes = [
   },
   {
     path: 'individualChat',
-    component: IndividualChatComponent,
     canActivate: [authGuard],
+    component: IndividualChatComponent,
   },
 ];
 

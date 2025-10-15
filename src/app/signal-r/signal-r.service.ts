@@ -9,7 +9,7 @@ export class SignalRService {
 
   startConnection = () => {
     this.hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl('http://localhost:5092/individualChatHub', {
+      .withUrl('https://localhost:7029/IndividualChatHub', {
         skipNegotiation: true,
         transport: signalR.HttpTransportType.WebSockets,
       })
@@ -23,11 +23,12 @@ export class SignalRService {
       .catch((err) => console.log('Error While Starting Connection' + err));
   };
 
-  askServer() {
-    this.hubConnection?.invoke('askServer', 'hey').catch((err) => {
-      console.error(err);
-    });
-  }
+  // askServer() {
+  //   this.hubConnection?.invoke('askServer', 'hey').catch((err) => {
+  //     console.error(err);
+  //   });
+  // }
+
   askServerListener() {
     this.hubConnection?.on('askServerResponse', (someText) => {
       console.log(someText);

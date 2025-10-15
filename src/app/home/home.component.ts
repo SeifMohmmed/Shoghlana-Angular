@@ -13,6 +13,7 @@ import { IdentityService } from '../identity/identity.service';
 export class HomeComponent implements OnInit {
   count: number;
   counter: Observable<number>;
+  isLogged: boolean = false;
 
   constructor(
     private translateService: TranslateService,
@@ -35,5 +36,15 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.identityService.decodeUserData();
+
+    this.identityService.userData.subscribe({
+      next: () => {
+        if (this.identityService.userData.getValue() !== null) {
+          this.isLogged = true;
+        } else {
+          this.isLogged = false;
+        }
+      },
+    });
   }
 }

@@ -10,6 +10,7 @@ import { JobStatus } from '../../Shared/Enums/JobStatus/JobStatus';
 import { ActivatedRoute } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { ClientService } from '../client.service';
+import { IdentityService } from '../../identity/identity.service';
 
 @Component({
   selector: 'app-client-profile',
@@ -24,7 +25,9 @@ export class ClientProfileComponent implements OnInit, AfterViewInit {
   emptyClientDescription: boolean = true;
   emptyClientCountry: boolean = true;
   vistitedClientId: number;
-  loggedInClientId: number;
+  loggedIn: number;
+  isFreelancer: boolean = false;
+  isClient: boolean = false;
   updatedClient: IClient = {} as IClient;
   @ViewChild('fileInput') fileInput: ElementRef;
   imageError: string | undefined;
@@ -38,6 +41,7 @@ export class ClientProfileComponent implements OnInit, AfterViewInit {
   constructor(
     private activatedRoute: ActivatedRoute,
     private clientService: ClientService,
+    private identityService: IdentityService,
     private datePipe: DatePipe
   ) {}
 
@@ -45,17 +49,48 @@ export class ClientProfileComponent implements OnInit, AfterViewInit {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     //Add 'implements OnInit' to the class.
 
+    this.identityService.id.subscribe({
+      next: () => {
+        if (this.identityService.id.getValue() !== null) {
+          this.loggedIn = Number(this.identityService.id.getValue());
+          console.log('Id From Navbar ' + this.loggedIn);
+        }
+      },
+    });
+
+    this.identityService.isClient.subscribe({
+      next: () => {
+        if (this.identityService.isClient.getValue() !== null) {
+          this.isClient = true;
+          console.log(this.identityService.isClient.getValue());
+        } else {
+          this.isClient = false;
+          console.log(this.identityService.isClient.getValue());
+        }
+      },
+    });
+
+    this.identityService.isFreelancer.subscribe({
+      next: () => {
+        if (this.identityService.isFreelancer.getValue() !== null) {
+          this.isFreelancer = true;
+          console.log(this.identityService.isFreelancer.getValue());
+        } else {
+          this.isFreelancer = false;
+          console.log(this.identityService.isFreelancer.getValue());
+        }
+      },
+    });
+
     this.vistitedClientId = Number(
       this.activatedRoute.snapshot.paramMap.get('id')
     );
-    this.loggedInClientId = Number(
-      this.activatedRoute.snapshot.paramMap.get('id')
-    );
-    console.log('Id From Local Stroage: ', this.loggedInClientId);
+    this.loggedIn = Number(this.activatedRoute.snapshot.paramMap.get('id'));
+    console.log('Id From Local Stroage: ', this.loggedIn);
 
-    this.updatedClient.id = Number(this.vistitedClientId);
+    this.updatedClient.id = Number(this.loggedIn);
 
-    console.log('LoggedIn Client Id ' + this.loggedInClientId);
+    console.log('LoggedIn Client Id ' + this.loggedIn);
     console.log('Visited Client Id ' + this.vistitedClientId);
 
     // console.log(this.clientId);

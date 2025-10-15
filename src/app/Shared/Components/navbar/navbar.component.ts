@@ -29,28 +29,60 @@ export class NavbarComponent implements OnInit {
     private identityService: IdentityService,
     private chatService: ChatService,
     @Inject(PLATFORM_ID) private platformId: Object
-  ) {
-    //using behavoir subject this code works with every change in dom
-    identityService.userData.subscribe({
-      next: () => {
-        this.isLogged = identityService.userData.getValue() !== null;
-      },
-    });
-  }
+  ) {}
 
   ngOnInit(): void {
     // Only access localStorage in the browser
-    if (isPlatformBrowser(this.platformId)) {
-      const id = localStorage.getItem('Id');
-      this.Id = id ? Number(id) : null;
-      console.log('Id from navbar' + this.Id);
+    // if (isPlatformBrowser(this.platformId)) {
+    this.identityService.userData.subscribe({
+      next: () => {
+        if (this.identityService.userData.getValue() !== null) {
+          this.isLogged = true;
+        } else {
+          this.isLogged = false;
+        }
+      },
+    });
 
-      if (localStorage.getItem('Role') === 'Client') {
-        this.isClient = true;
-      } else {
-        this.isFreelancer = true;
-      }
-    }
+    this.identityService.id.subscribe({
+      next: () => {
+        if (this.identityService.id.getValue() !== null) {
+          this.Id = Number(this.identityService.id.getValue());
+          console.log('Id From Navbar ' + this.Id);
+        }
+      },
+    });
+
+    this.identityService.isClient.subscribe({
+      next: () => {
+        if (this.identityService.isClient.getValue() !== null) {
+          this.isClient = true;
+          console.log(this.identityService.isClient.getValue());
+        } else {
+          this.isClient = false;
+          console.log(this.identityService.isClient.getValue());
+        }
+      },
+    });
+
+    this.identityService.isFreelancer.subscribe({
+      next: () => {
+        if (this.identityService.isFreelancer.getValue() !== null) {
+          this.isFreelancer = true;
+          console.log(this.identityService.isFreelancer.getValue());
+        } else {
+          this.isFreelancer = false;
+          console.log(this.identityService.isFreelancer.getValue());
+        }
+      },
+    });
+
+    //   if (localStorage.getItem('Role') === 'Client') {
+    //     this.isClient = true;
+    //   } else {
+    //     this.isFreelancer = true;
+    //   }
+    // }
     this.chatService.messages$.subscribe((res) => {
       this.messages = res;
       console.log(this.messages);

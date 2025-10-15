@@ -71,26 +71,35 @@
             type="password"
           />
         </div>
-        <!-- validation messages -->
-        <span
-          class="text-danger small"
-          *ngIf="LoginForm.get('password')?.touched &&LoginForm.get('password')?.errors?.['required']"
-        >
-          الرقم السري مطلوب
-        </span>
+        <p class="p">
+          <span class="span"
+            ><a routerLink="/account/forgetpassword"
+              >هل نسيت كلمة السر؟</a
+            ></span
+          >
 
-        <!-- ================= SUBMIT ================= -->
-        <!-- <button class="button-submit">تسجيل الدخول</button> -->
-        <button
-          class="btn"
-          [disabled]="LoginForm.invalid || isLoading"
-          type="submit"
-        >
-          <i *ngIf="isLoading" class="fa fa-spinner fa-spin"></i>
-          تسجيل الدخول
-        </button>
+          <!-- validation messages -->
+          <span
+            class="text-danger small"
+            *ngIf="LoginForm.get('password')?.touched &&LoginForm.get('password')?.errors?.['required']"
+          >
+            الرقم السري مطلوب
+          </span>
 
-        <span *ngIf="apiError" class="text-danger">{{ apiError }} </span>
+          <!-- ================= SUBMIT ================= -->
+          <!-- <button class="button-submit">تسجيل الدخول</button> -->
+          <button
+            class="btn"
+            [disabled]="LoginForm.invalid || isLoading"
+            type="submit"
+          >
+            <i *ngIf="isLoading" class="fa fa-spinner fa-spin"></i>
+            تسجيل الدخول
+          </button>
+
+          <span *ngIf="apiError" class="text-danger">{{ apiError }} </span>
+        </p>
+
         <p class="p">ليس لديك حساب؟ <span class="span">سجل الآن</span></p>
         <p class="p line">أو</p>
 

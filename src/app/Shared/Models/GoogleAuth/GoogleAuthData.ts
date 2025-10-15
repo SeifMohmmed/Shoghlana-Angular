@@ -5,5 +5,5 @@ export interface GoogleAuthData {
   photoUrl: string;
   name: string;
   firstName: string;
-  role: number;
+  role: number | null;
 }

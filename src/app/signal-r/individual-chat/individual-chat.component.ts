@@ -14,4 +14,8 @@ export class IndividualChatComponent {
   backToHome() {
     this.closeChatEmitter.emit();
   }
+
+  sendMessages(content: string) {
+    this.individualChatService.sendMessage(content);
+  }
 }

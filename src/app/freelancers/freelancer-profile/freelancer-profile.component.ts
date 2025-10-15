@@ -5,6 +5,7 @@ import { FreelancersService } from '../freelancers.service';
 import { ISkill } from '../../Shared/Models/Skill/Skill';
 import { SkillsService } from '../../Skills/skills.service';
 import { MatDialog } from '@angular/material/dialog';
+import { IdentityService } from '../../identity/identity.service';
 
 @Component({
   selector: 'app-freelancer-profile',
@@ -20,12 +21,16 @@ export class FreelancerProfileComponent implements OnInit {
   selectedSkillsIds: number[] = [];
   previewImage: string | ArrayBuffer | null = null;
   skillInput: string;
+  loggedInIn: number;
+  isFreelancer: boolean = false;
+  isClient: boolean = false;
   // StringifiedWorkingHistory: any;
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private freelancerService: FreelancersService,
     private skillService: SkillsService,
+    private identityService: IdentityService,
     private router: Router,
     private dialog: MatDialog
   ) {}
@@ -34,6 +39,39 @@ export class FreelancerProfileComponent implements OnInit {
     this.freelancerId = Number(this.activatedRoute.snapshot.paramMap.get('id'));
     this.loadFreelancerData();
     this.loadAllSkills();
+
+    this.identityService.id.subscribe({
+      next: () => {
+        if (this.identityService.id.getValue() !== null) {
+          this.loggedInIn = Number(this.identityService.id.getValue());
+          console.log('Id From Navbar ' + this.loggedInIn);
+        }
+      },
+    });
+
+    this.identityService.isClient.subscribe({
+      next: () => {
+        if (this.identityService.isClient.getValue() !== null) {
+          this.isClient = true;
+          console.log(this.identityService.isClient.getValue());
+        } else {
+          this.isClient = false;
+          console.log(this.identityService.isClient.getValue());
+        }
+      },
+    });
+
+    this.identityService.isFreelancer.subscribe({
+      next: () => {
+        if (this.identityService.isFreelancer.getValue() !== null) {
+          this.isFreelancer = true;
+          console.log(this.identityService.isFreelancer.getValue());
+        } else {
+          this.isFreelancer = false;
+          console.log(this.identityService.isFreelancer.getValue());
+        }
+      },
+    });
   }
 
   private loadAllSkills() {
@@ -63,6 +101,20 @@ export class FreelancerProfileComponent implements OnInit {
 
     if (input.files && input.files.length > 0) {
       const file = input.files[0];
+      const validExtensions = ['image/png', 'image/jpeg']; // Allowed file types
+      const maxSize = 1 * 1024 * 1024; // Maximum size in bytes (1 MB)
+
+      if (!validExtensions.includes(file.type)) {
+        alert('الامتدادات المسموح بها : png , jpg and jpeg');
+        input.value = ''; // Clear the input
+        return;
+      }
+
+      if (file.size > maxSize) {
+        alert('يجب ألا يتعدى حجم الصورة 1 ميجابايت');
+        input.value = ''; // Clear the input
+        return;
+      }
 
       // Assuming this.freelancer.personalImageBytes should be updated with the file data
       this.freelancer.personalImageBytes = file;
@@ -183,6 +235,16 @@ export class FreelancerProfileComponent implements OnInit {
       });
     }
     //this.navigateToPortfolio();
+  }
+
+  getImageSource(): string {
+    if (this.editMode && this.previewImage) {
+      return String(this.previewImage);
+    } else if (this.freelancer.personalImageBytes !== null) {
+      return String(this.freelancer.personalImageBytes);
+    } else {
+      return '../../../assets/Images/default-profile-picture-avatar-png-green.png';
+    }
   }
 
   private convertToBase64(bytes: any): string {

@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { ApiResponse } from '../Shared/Models/Response/ApiResponse';
 import { IClient } from '../Shared/Models/Client/Client';
 import { IClientJob } from '../Shared/Models/Client/IClient-Job';
+import { IProject } from '../Shared/Models/Project/Project';
 
 @Injectable({
   providedIn: 'root',
@@ -22,9 +23,11 @@ export class ProjectService {
     return this.http.get<ApiResponse<any>>(this.baseURL + 'project/' + id);
   }
 
-  getByFreelancerId(id: number) {
+  getByFreelancerId(id: number): Observable<ApiResponse<any>> {
     console.log(id);
-    return this.http.get(this.baseURL + 'project/freelancer/' + id);
+    return this.http.get<ApiResponse<any>>(
+      this.baseURL + 'project/freelancer/' + id
+    );
   }
 
   addProject(
